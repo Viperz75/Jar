@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+
 class MyDropdownTextField extends StatefulWidget {
   final itemKey;
   final savedAmount;
-  final void Function(double newValue) onUpdateSavedAmount;
+  final void Function(double newValue, double enteredValues) onUpdateSavedAmount;
 
   const MyDropdownTextField({
     Key? key,
@@ -43,7 +44,8 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
     if (enteredText.isNotEmpty) {
       double enteredValue = double.parse(enteredText);
       double _added_value = widget.savedAmount + enteredValue;
-      widget.onUpdateSavedAmount(_added_value);
+      widget.onUpdateSavedAmount(_added_value, enteredValue);
+
       return _added_value;
     }
 
@@ -56,8 +58,7 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
     if (enteredText.isNotEmpty) {
       double enteredValue = double.parse(enteredText);
       double _added_value = widget.savedAmount - enteredValue;
-      widget.onUpdateSavedAmount(_added_value);
-
+      widget.onUpdateSavedAmount(_added_value, -enteredValue);
       return _added_value;
     }
     // Handle case where entered text is empty

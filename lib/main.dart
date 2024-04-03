@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
 
   await Hive.initFlutter();
+  Hive.registerAdapter(JarAdapter());
   await Hive.openBox('jar_box');
 
   runApp(const Jar());
@@ -26,7 +27,7 @@ class _JarState extends State<Jar> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: SettingsPage(),
     );
   }
 }

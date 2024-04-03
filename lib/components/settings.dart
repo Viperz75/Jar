@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
               // Icon(Icons.wb_twilight),
               SizedBox(width: 10.0),
               Text(
-                'About the app',
+                'About us',
                 style: TextStyle(
                   fontSize: 17.0,
                 ),
@@ -42,7 +42,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('About the App'),
+                          title: Text('Apps'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,12 +73,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         SizedBox(width: 5.0),
                         Icon(
-                          Icons.person,
+                          Icons.apps_rounded,
                           color: Colors.black,
                         ),
                         SizedBox(width: 10.0),
                         Text(
-                          'About',
+                          'Apps',
                           style: TextStyle(fontSize: 16.0, color: Colors.black),
                         ),
                       ],
@@ -86,10 +86,65 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
+              buildAboutUs(context),
             ],
           ),
         ],
       ),
     );
+  }
+
+  Expanded buildAboutUs(BuildContext context) {
+    return Expanded(
+              child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('About the App'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('App Name: Jar'),
+                            SizedBox(height: 5.0),
+                            Text('Version: 1.0.0'),
+                            SizedBox(height: 5.0),
+                            Text('Developer: Niaz Mahmud Akash'),
+                            SizedBox(height: 5.0),
+                            Text(
+                                'Description: Jar is a saving tracker app where you can save your goals and savings all together.'),
+                            SizedBox(height: 15.0),
+                            Center(
+                              child: Text(
+                                  'More features coming soon, stay tuned!'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: SizedBox(
+                  height: 50.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 5.0),
+                      Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
+                      SizedBox(width: 10.0),
+                      Text(
+                        'About',
+                        style: TextStyle(fontSize: 16.0, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
   }
 }
