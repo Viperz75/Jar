@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 import 'dart:math';
 import '../components/chart.dart';
 import '../components/quick_edit.dart';
 import '../components/deadline.dart';
 import 'package:fl_chart/fl_chart.dart';
+
+import '../theme/theme_manager.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -383,7 +386,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           child: Text(
                             itemKey == null ? 'Save' : 'Update',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Provider.of<ThemeProvider>(context).themeModeType ==
+                                  ThemeModeType.dark ? Colors.white : Colors.black,
                             ),
                           ),
                         ),
@@ -421,13 +425,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Color selectedColor = colors[randomIndex];
 
     return Scaffold(
-      backgroundColor: Color(0xfff5f7ec),
+      backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
+          ThemeModeType.dark
+          ? Colors.black // Set red background color for dark mode
+          : Color(0xfff5f7ec),
       appBar: AppBar(
-        backgroundColor: Color(0xfff5f7ec),
+        // backgroundColor: Color(0xfff5f7ec),
+        backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
+                ThemeModeType.dark
+            ? Colors.black // Set red background color for dark mode
+            : Color(0xfff5f7ec),
         title: Text('Saved ৳${totalGoal}/৳${totalSaved}'),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
+        color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Color(0xff000c15) : Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -442,7 +453,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
             ),
             FloatingActionButton(
-              backgroundColor: Color(0xfffcd9c3),
+              backgroundColor: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Color(0xff5e5c6a) : Color(0xfffcd9c3),
               child: const Icon(Icons.add),
               onPressed: () {
                 openAddDialog(context, null);
@@ -475,10 +486,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Card(
-                        color: Color(0xffdbdbdb), // Jar color
+                        color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.black : Color(0xffdbdbdb), // Jar color
                         elevation: 2,
-                        shape: const RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.black, width: 2.0),
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.white : Colors.black, width: 2.0),
                             borderRadius: BorderRadius.all(
                                 Radius.circular(15))), // Jar Shape
                         child: Padding(
@@ -586,74 +597,74 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                       openAddDialog(
                                           context, currentItem['key']);
                                     },
-                                    icon: const Icon(Icons.edit,
-                                        color: Colors.black),
+                                    icon: const Icon(Icons.edit),
                                   ),
                                   const SizedBox(width: 10),
                                   IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: Text(
-                                                'History for ${currentItem['name']}'),
-                                            content: SingleChildScrollView(
-                                              child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: currentItem[
-                                                              'history'] !=
-                                                          null
-                                                      ? currentItem['history']
-                                                          .map<Widget>(
-                                                              (amount) {
-                                                          bool isPositive =
-                                                              false;
-                                                          if (amount
-                                                              is double) {
-                                                            isPositive =
-                                                                amount > 0;
-                                                          }
-                                                          return ListTile(
-                                                            title: Text(
-                                                              isPositive
-                                                                  ? 'DEPOSIT: +$amount'
-                                                                  : 'WITHDRAWAL: $amount',
-                                                              style: TextStyle(
-                                                                  color: isPositive
-                                                                      ? Colors
-                                                                          .green
-                                                                      : Colors
-                                                                          .red),
-                                                            ),
-                                                          );
-                                                        }).toList()
-                                                      : []),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text('Close'),
-                                              ),
-                                            ],
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text(
+                                              'History for ${currentItem['name']}'),
+                                          content: SingleChildScrollView(
+                                            child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: currentItem[
+                                                            'history'] !=
+                                                        null
+                                                    ? currentItem['history']
+                                                        .map<Widget>((amount) {
+                                                        bool isPositive = false;
+                                                        if (amount is double) {
+                                                          isPositive =
+                                                              amount > 0;
+                                                        }
+                                                        return ListTile(
+                                                          title: Text(
+                                                            isPositive
+                                                                ? 'DEPOSIT: +$amount'
+                                                                : 'WITHDRAWAL: $amount',
+                                                            style: TextStyle(
+                                                                color: isPositive
+                                                                    ? Colors
+                                                                        .green
+                                                                    : Colors
+                                                                        .red),
+                                                          ),
+                                                        );
+                                                      }).toList()
+                                                    : []),
                                           ),
-                                        );
-                                      },
-                                      icon: const Icon(Icons.history),),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('Close'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.history),
+                                  ),
                                   IconButton(
                                     onPressed: () {
                                       showDialog(
                                         context: context,
                                         builder: (context) {
-                                          if (currentItem['history'] == null || currentItem['goal_amount'] == null) {
+                                          if (currentItem['history'] == null ||
+                                              currentItem['goal_amount'] ==
+                                                  null) {
                                             // If either history or goal_amount is null, show 'Chart not available' message
                                             return AlertDialog(
-                                              title: Text('Chart not available'),
-                                              content: Text('History or Goal Amount data is missing.'),
+                                              title:
+                                                  Text('Chart not available'),
+                                              content: Text(
+                                                  'History or Goal Amount data is missing.'),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () {
@@ -667,12 +678,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                             double goalAmount;
                                             try {
                                               // Parse goal_amount as a double
-                                              goalAmount = double.parse(currentItem['goal_amount']);
+                                              goalAmount = double.parse(
+                                                  currentItem['goal_amount']);
                                             } catch (e) {
                                               // If parsing fails, show 'Chart not available' message
                                               return AlertDialog(
-                                                title: Text('Chart not available'),
-                                                content: Text('Invalid Goal Amount data.'),
+                                                title:
+                                                    Text('Chart not available'),
+                                                content: Text(
+                                                    'Invalid Goal Amount data.'),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () {
@@ -686,12 +700,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
                                             // If both history and parsed goal_amount are present, show the chart
                                             return AlertDialog(
-                                              title: Text('History vs. Goal Amount'),
+                                              title: Text(
+                                                  'History vs. Goal Amount'),
                                               content: Container(
                                                 height: 300, //  height
                                                 child: StackedBarChart(
                                                   // Pass your history and parsed goal_amount data here
-                                                  history: currentItem['history'],
+                                                  history:
+                                                      currentItem['history'],
                                                   goalAmount: goalAmount,
                                                 ),
                                               ),
@@ -708,7 +724,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         },
                                       );
                                     },
-                                    icon: const Icon(Icons.stacked_bar_chart_rounded, color: Colors.black),
+                                    icon: const Icon(
+                                        Icons.stacked_bar_chart_rounded),
                                   ),
 
                                   const SizedBox(width: 10),
@@ -744,8 +761,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         },
                                       );
                                     },
-                                    icon: const Icon(Icons.delete_outline,
-                                        color: Colors.black),
+                                    icon: const Icon(Icons.delete_outline),
                                   )
                                 ],
                               ),
