@@ -1,7 +1,9 @@
+import 'package:jar_app/components/settings.dart';
 import 'package:jar_app/mainScreen/home.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'components/currencies.dart';
 import 'theme/theme_manager.dart';
 
 void main() async {
@@ -31,8 +33,28 @@ class _JarState extends State<Jar> {
     //   darkTheme: ThemeData.dark(),
     //   home: SettingsPage(),
     // );
-    return ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    // return ChangeNotifierProvider(
+    //   create: (_) => ThemeProvider(),
+    //   child: Consumer<ThemeProvider>(
+    //     builder: (context, themeProvider, _) {
+    //       return MaterialApp(
+    //         debugShowCheckedModeBanner: false,
+    //         themeMode: themeProvider.themeModeType == ThemeModeType.system
+    //             ? ThemeMode.system
+    //             : themeProvider.themeModeType == ThemeModeType.dark
+    //             ? ThemeMode.dark
+    //             : ThemeMode.light,
+    //         theme: themeProvider.themeData,
+    //         home: const Home(),
+    //       );
+    //     },
+    //   ),
+    // );
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => CurrencyNotifier()),
+      ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {
           return MaterialApp(

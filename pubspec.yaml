@@ -43,6 +43,7 @@ dependencies:
   adaptive_theme: ^3.6.0
   provider: ^6.1.2
   url_launcher: ^6.0.0
+  currency_picker: ^2.0.21
 
 dev_dependencies:
   flutter_test:

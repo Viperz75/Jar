@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
+import 'package:jar_app/components/currency_selector.dart';
 import 'package:jar_app/components/pages/privacy_policy.dart';
 import 'package:jar_app/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -28,6 +31,19 @@ class _SettingsPageState extends State<SettingsPage> {
       await launchUrl(emailLaunchUri.toString() as Uri);
     } else {
       throw 'Could not launch $emailLaunchUri';
+    }
+  }
+
+  String getThemeModeString(ThemeModeType themeModeType) {
+    switch (themeModeType) {
+      case ThemeModeType.light:
+        return 'Light Mode';
+      case ThemeModeType.dark:
+        return 'Dark Mode';
+      case ThemeModeType.system:
+        return 'System Mode';
+      default:
+        return '';
     }
   }
 
@@ -133,21 +149,96 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     );
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  child: Column(
                     children: [
-                      Icon(Provider.of<ThemeProvider>(context).themeModeType ==
-                              ThemeModeType.dark
-                          ? Icons.dark_mode_rounded
-                          : Icons.light_mode_rounded),
-                      const SizedBox(
-                        width: 10,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(Provider.of<ThemeProvider>(context).themeModeType ==
+                                  ThemeModeType.dark
+                              ? Icons.dark_mode_rounded
+                              : Icons.light_mode_rounded),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const Text('Theme',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                              )),
+                        ],
                       ),
-                      const Text('Theme',
+                      Padding(
+                        padding: EdgeInsets.only(left: 35.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              getThemeModeString(
+                                  Provider.of<ThemeProvider>(context).themeModeType),
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const Row(
+            children: [
+              SizedBox(width: 10.0),
+              // Icon(Icons.wb_twilight),
+              SizedBox(width: 10.0),
+              Text(
+                'Functionality',
+                style: TextStyle(
+                  fontSize: 17.0,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CurrencySelectorDialog();
+                      },
+                    );
+                  },
+                  child: SizedBox(
+                    height: 50.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 5.0),
+                        Icon(
+                          Icons.money_rounded,
+                          color: Provider.of<ThemeProvider>(context)
+                              .themeModeType ==
+                              ThemeModeType.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        const SizedBox(width: 10.0),
+                        Text(
+                          'Currency',
                           style: TextStyle(
                             fontSize: 16.0,
-                          )),
-                    ],
+                            color: Provider.of<ThemeProvider>(context)
+                                .themeModeType ==
+                                ThemeModeType.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -9,6 +9,7 @@ import 'dart:math';
 import '../components/chart.dart';
 import '../components/quick_edit.dart';
 import '../components/deadline.dart';
+import '../components/currencies.dart';
 
 import '../theme/theme_manager.dart';
 
@@ -502,7 +503,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ThemeModeType.dark
             ? Colors.black // Set red background color for dark mode
             : const Color(0xfff5f7ec),
-        title: Text('Saved ৳$totalGoal/৳$totalSaved'),
+        title: Row(
+          children: [
+            // Text('Saved ৳$totalGoal/৳$totalSaved'),
+            Text('Saved '),
+            CurrencyWidget(), // Include CurrencyWidget here
+            Text('$totalGoal/$totalSaved'),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff000c15) : Colors.white,
@@ -587,18 +595,45 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   //   Text('৳${currentItem['saved_amount']}'),
 
                                   if (currentItem['goal_amount'].length > 0)
-                                    Text(
-                                        '৳${currentItem['saved_amount']}/ ৳${currentItem['goal_amount']} '
-                                        '(${(double.parse(currentItem['saved_amount'] as String) / double.parse(currentItem['goal_amount'] as String) * 100).toStringAsFixed(2)}%)',
-                                        style: const TextStyle(fontSize: 16)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        CurrencyWidget(), Text('${currentItem['saved_amount']} /', style: const TextStyle(fontSize: 16)), CurrencyWidget(), Text('${currentItem['goal_amount']} ', style: const TextStyle(fontSize: 16)),
+                                        Text(
+                                            '(${(double.parse(currentItem['saved_amount'] as String) / double.parse(currentItem['goal_amount'] as String) * 100).toStringAsFixed(2)}%)',
+                                            style: const TextStyle(fontSize: 16)),
+                                        // Text(
+                                        //     '৳${currentItem['saved_amount']}/ ৳${currentItem['goal_amount']} '
+                                        //     '(${(double.parse(currentItem['saved_amount'] as String) / double.parse(currentItem['goal_amount'] as String) * 100).toStringAsFixed(2)}%)',
+                                        //     style: const TextStyle(fontSize: 16)),
+                                      ],
+                                    ),
                                   if (currentItem['goal_amount'].length == 0)
-                                    Text('৳${currentItem['saved_amount']}',
-                                        style: const TextStyle(fontSize: 16)),
+                                    // Text('৳${currentItem['saved_amount']}',
+                                    //     style: const TextStyle(fontSize: 16)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        CurrencyWidget(),
+                                        Text('${currentItem['saved_amount']}',
+                                            style: const TextStyle(fontSize: 16))
+                                      ],
+                                    ),
                                   const SizedBox(height: 5.0),
                                   if (currentItem['goal_amount'].length > 0)
-                                    Text(
-                                        'Remaining: ৳${(double.parse(currentItem['goal_amount'] as String) - double.parse(currentItem['saved_amount'] as String))}',
-                                        style: const TextStyle(fontSize: 16)),
+                                    // Text(
+                                    //     'Remaining: ৳${(double.parse(currentItem['goal_amount'] as String) - double.parse(currentItem['saved_amount'] as String))}',
+                                    //     style: const TextStyle(fontSize: 16)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text('Remaining: ', style: const TextStyle(fontSize: 16),),
+                                        CurrencyWidget(),
+                                        Text(
+                                            '${(double.parse(currentItem['goal_amount'] as String) - double.parse(currentItem['saved_amount'] as String))}',
+                                            style: const TextStyle(fontSize: 16)),
+                                      ],
+                                    ),
                                   const SizedBox(height: 5.0),
 
                                   // Jar Deadline

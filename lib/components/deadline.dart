@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'currencies.dart';
 
 class ExpandableDeadlineButton extends StatefulWidget {
   final String deadline;
@@ -44,11 +45,32 @@ class _ExpandableDeadlineButtonState extends State<ExpandableDeadlineButton> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 5.0),
-                Text('Save: ৳${calculatePerDaySaving().toStringAsFixed(2)}/day', style: const TextStyle(fontSize: 14)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Save', style: const TextStyle(fontSize: 14),),
+                    CurrencyWidget(),
+                    Text('${calculatePerDaySaving().toStringAsFixed(2)}/day', style: const TextStyle(fontSize: 14)),
+                  ],
+                ),
                 const SizedBox(height: 5.0),
-                Text('Save: ৳${calculatePerWeekSaving().toStringAsFixed(2)}/week', style: const TextStyle(fontSize: 14)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Save', style: const TextStyle(fontSize: 14),),
+                    CurrencyWidget(),
+                    Text('${calculatePerWeekSaving().toStringAsFixed(2)}/week', style: const TextStyle(fontSize: 14)),
+                  ],
+                ),
                 const SizedBox(height: 5.0),
-                Text('Save: ৳${calculatePerMonthSaving().toStringAsFixed(2)}/month', style: const TextStyle(fontSize: 14)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Save', style: const TextStyle(fontSize: 14),),
+                    CurrencyWidget(),
+                    Text('${calculatePerMonthSaving().toStringAsFixed(2)}/month', style: const TextStyle(fontSize: 14)),
+                  ],
+                ),
               ],
             ),
           ),
