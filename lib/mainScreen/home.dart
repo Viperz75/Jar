@@ -1,4 +1,4 @@
-import 'package:expense_jar/components/settings.dart';
+import 'package:jar_app/components/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,7 +9,6 @@ import 'dart:math';
 import '../components/chart.dart';
 import '../components/quick_edit.dart';
 import '../components/deadline.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 import '../theme/theme_manager.dart';
 
@@ -80,10 +79,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   double perMonthSave = 0;
   double perYearSave = 0;
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   void initState() {
@@ -93,7 +88,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     calculateGoalAmount();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 200), // Adjust the duration as needed
+      duration: const Duration(milliseconds: 200), // Adjust the duration as needed
     );
     _animation = CurvedAnimation(
       parent: _controller,
@@ -253,6 +248,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       _dateController.clear();
     }
 
+    final _formKey = GlobalKey<FormState>();
+
     showGeneralDialog(
       context: context,
       pageBuilder: (context, animation1, animation2) {
@@ -272,130 +269,200 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               content: SingleChildScrollView(
                 child: Container(
                   constraints:
-                      const BoxConstraints(maxHeight: 354, maxWidth: 500),
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: _jar_name,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                                color: Colors.black, width: 2.0),
-                          ),
-                          labelText: 'Jar name',
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _saved,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                                color: Colors.black, width: 2.0),
-                          ),
-                          labelText: 'Saved',
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _goal,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                                color: Colors.black, width: 2.0),
-                          ),
-                          labelText: 'Goal (Optional)',
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      TextField(
-                        controller: _dateController,
-                        keyboardType: TextInputType.datetime,
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2015, 8),
-                            lastDate: DateTime(2101),
-                          );
-                          if (pickedDate != null) {
-                            _dateController.text =
-                                DateFormat('dd/MM/yyyy').format(pickedDate);
-                            print(_dateController.text);
-                          }
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                                color: Colors.black, width: 2.0),
-                          ),
-                          labelText: 'Deadline (Optional)',
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      SizedBox(
-                        width: 200,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if (itemKey == null) {
-                              _createItem({
-                                "name": _jar_name.text,
-                                "saved_amount": _saved.text,
-                                "goal_amount": _goal.text,
-                                "deadline": _dateController.text,
-                                'history':
-                                    [], // Initialize history as empty list
-                              });
-                            }
-
-                            if (itemKey != null) {
-                              Map<String, dynamic> existingItem =
-                                  _items.firstWhere(
-                                      (element) => element['key'] == itemKey);
-                              await _update_item(
-                                itemKey,
-                                {
-                                  'name': _jar_name.text.trim(),
-                                  'saved_amount': _saved.text.trim(),
-                                  'goal_amount': _goal.text.trim(),
-                                  'deadline': _dateController.text.trim(),
-                                  'history': existingItem[
-                                      'history'], // Preserve the existing history
-                                },
-                                // Pass a null value as the history value since no change is made to saved amount or goal amount
-                                0.0,
-                              );
-                            }
-
-                            // clearing text field
-                            _jar_name.text = '';
-                            _saved.text = '';
-                            _goal.text = '';
-                            _dateController.text = '';
-
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            itemKey == null ? 'Save' : 'Update',
-                            style: TextStyle(
-                              color: Provider.of<ThemeProvider>(context).themeModeType ==
-                                  ThemeModeType.dark ? Colors.white : Colors.black,
+                      const BoxConstraints(maxHeight: 345, maxWidth: 500),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _jar_name,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 2.0),
                             ),
+                            labelText: 'Jar name',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a jar name';
+                            }
+                            return null; // Return null if the input is valid
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: _saved,
+                          keyboardType:
+                              const TextInputType.numberWithOptions(decimal: true),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 2.0),
+                            ),
+                            labelText: 'Saved',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a saved amount';
+                            }
+                            // Additional validation logic can be added here if needed
+                            return null; // Return null if the input is valid
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: _goal,
+                          keyboardType:
+                              const TextInputType.numberWithOptions(decimal: true),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 2.0),
+                            ),
+                            labelText: 'Goal (Optional)',
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 15),
+                        TextField(
+                          controller: _dateController,
+                          keyboardType: TextInputType.datetime,
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2015, 8),
+                              lastDate: DateTime(2101),
+                            );
+                            if (pickedDate != null) {
+                              _dateController.text =
+                                  DateFormat('dd/MM/yyyy').format(pickedDate);
+                              print(_dateController.text);
+                            }
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 2.0),
+                            ),
+                            labelText: 'Deadline (Optional)',
+                          ),
+                        ),
+                        // const SizedBox(height: 80),
+                        // SizedBox(
+                        //   width: 200,
+                        //   child: ElevatedButton(
+                        //     onPressed: () async {
+                        //       if (_formKey.currentState!.validate()) {
+                        //         // Form is valid, proceed with saving/updating
+                        //         // Your saving/updating logic here
+                        //         if (itemKey == null) {
+                        //           _createItem({
+                        //             "name": _jar_name.text,
+                        //             "saved_amount": _saved.text,
+                        //             "goal_amount": _goal.text,
+                        //             "deadline": _dateController.text,
+                        //             'history':
+                        //             [], // Initialize history as empty list
+                        //           });
+                        //         }
+                        //
+                        //         if (itemKey != null) {
+                        //           Map<String, dynamic> existingItem =
+                        //           _items.firstWhere(
+                        //                   (element) => element['key'] == itemKey);
+                        //           await _update_item(
+                        //             itemKey,
+                        //             {
+                        //               'name': _jar_name.text.trim(),
+                        //               'saved_amount': _saved.text.trim(),
+                        //               'goal_amount': _goal.text.trim(),
+                        //               'deadline': _dateController.text.trim(),
+                        //               'history': existingItem[
+                        //               'history'], // Preserve the existing history
+                        //             },
+                        //             // Pass a null value as the history value since no change is made to saved amount or goal amount
+                        //             0.0,
+                        //           );
+                        //         }
+                        //
+                        //         // clearing text field
+                        //         _jar_name.text = '';
+                        //         _saved.text = '';
+                        //         _goal.text = '';
+                        //         _dateController.text = '';
+                        //
+                        //         Navigator.of(context).pop();}
+                        //
+                        //
+                        //     },
+                        //     child: Text(
+                        //       itemKey == null ? 'Save' : 'Update',
+                        //       style: TextStyle(
+                        //         color: Provider.of<ThemeProvider>(context).themeModeType ==
+                        //             ThemeModeType.dark ? Colors.white : Colors.black,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
               ),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      // Form is valid, proceed with saving/updating
+                      // Your saving/updating logic here
+                      if (itemKey == null) {
+                        _createItem({
+                          "name": _jar_name.text,
+                          "saved_amount": _saved.text,
+                          "goal_amount": _goal.text,
+                          "deadline": _dateController.text,
+                          'history':
+                          [], // Initialize history as empty list
+                        });
+                      }
+
+                      if (itemKey != null) {
+                        Map<String, dynamic> existingItem =
+                        _items.firstWhere(
+                                (element) => element['key'] == itemKey);
+                        await _update_item(
+                          itemKey,
+                          {
+                            'name': _jar_name.text.trim(),
+                            'saved_amount': _saved.text.trim(),
+                            'goal_amount': _goal.text.trim(),
+                            'deadline': _dateController.text.trim(),
+                            'history': existingItem[
+                            'history'], // Preserve the existing history
+                          },
+                          // Pass a null value as the history value since no change is made to saved amount or goal amount
+                          0.0,
+                        );
+                      }
+
+                      // clearing text field
+                      _jar_name.text = '';
+                      _saved.text = '';
+                      _goal.text = '';
+                      _dateController.text = '';
+
+                      Navigator.of(context).pop();}
+
+
+                  },
+                  child: Text('Save'),
+                ),
+              ],
               shape: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.0),
                 borderSide: BorderSide.none,
@@ -409,11 +476,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   // List of card colors
   List<Color> colors = [
-    Color(0xffdbdbdb),
-    Color(0xffd5fcd2),
-    Color(0xffd2fcfc),
-    Color(0xffdbd2fc),
-    Color(0xfffcead2),
+    const Color(0xffdbdbdb),
+    const Color(0xffd5fcd2),
+    const Color(0xffd2fcfc),
+    const Color(0xffdbd2fc),
+    const Color(0xfffcead2),
   ];
 
   // Color(0xffdbdbdb), Color(0xffd5fcd2), Color(0xffd2fcfc), Color(0xffdbd2fc), Color(0xfffcead2)
@@ -428,24 +495,24 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
           ThemeModeType.dark
           ? Colors.black // Set red background color for dark mode
-          : Color(0xfff5f7ec),
+          : const Color(0xfff5f7ec),
       appBar: AppBar(
         // backgroundColor: Color(0xfff5f7ec),
         backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
                 ThemeModeType.dark
             ? Colors.black // Set red background color for dark mode
-            : Color(0xfff5f7ec),
-        title: Text('Saved ৳${totalGoal}/৳${totalSaved}'),
+            : const Color(0xfff5f7ec),
+        title: Text('Saved ৳$totalGoal/৳$totalSaved'),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Color(0xff000c15) : Colors.white,
+        color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff000c15) : Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
+                    MaterialPageRoute(builder: (context) => const SettingsPage()));
               },
               icon: const Icon(
                 Icons.settings,
@@ -453,7 +520,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
             ),
             FloatingActionButton(
-              backgroundColor: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Color(0xff5e5c6a) : Color(0xfffcd9c3),
+              backgroundColor: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff5e5c6a) : const Color(0xfffcd9c3),
               child: const Icon(Icons.add),
               onPressed: () {
                 openAddDialog(context, null);
@@ -469,8 +536,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 children: [
                   // Show this when there's no jar
                   Image.asset('images/jar_background.png'),
-                  SizedBox(height: 8.0),
-                  Text(
+                  const SizedBox(height: 8.0),
+                  const Text(
                     'Add a new jar by clicking the button below!',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
@@ -486,11 +553,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Card(
-                        color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.black : Color(0xffdbdbdb), // Jar color
+                        color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.black : const Color(0xffdbdbdb), // Jar color
                         elevation: 2,
                         shape: RoundedRectangleBorder(
                             side: BorderSide(color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.white : Colors.black, width: 2.0),
-                            borderRadius: BorderRadius.all(
+                            borderRadius: const BorderRadius.all(
                                 Radius.circular(15))), // Jar Shape
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -503,10 +570,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   // Jar Name
                                   Text(
                                     // currentItem['name'] ?? 'Default name',
-                                    currentItem != null &&
-                                            currentItem['name'] != null
-                                        ? currentItem['name']
-                                        : 'Default Name',
+                                    currentItem['name'] ?? 'Default Name',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -534,7 +598,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   if (currentItem['goal_amount'].length > 0)
                                     Text(
                                         'Remaining: ৳${(double.parse(currentItem['goal_amount'] as String) - double.parse(currentItem['saved_amount'] as String))}',
-                                        style: TextStyle(fontSize: 16)),
+                                        style: const TextStyle(fontSize: 16)),
                                   const SizedBox(height: 5.0),
 
                                   // Jar Deadline
@@ -643,7 +707,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: Text('Close'),
+                                              child: const Text('Close'),
                                             ),
                                           ],
                                         ),
@@ -662,15 +726,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                             // If either history or goal_amount is null, show 'Chart not available' message
                                             return AlertDialog(
                                               title:
-                                                  Text('Chart not available'),
-                                              content: Text(
+                                                  const Text('Chart not available'),
+                                              content: const Text(
                                                   'History or Goal Amount data is missing.'),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text('Close'),
+                                                  child: const Text('Close'),
                                                 ),
                                               ],
                                             );
@@ -684,15 +748,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                               // If parsing fails, show 'Chart not available' message
                                               return AlertDialog(
                                                 title:
-                                                    Text('Chart not available'),
-                                                content: Text(
+                                                    const Text('Chart not available'),
+                                                content: const Text(
                                                     'Invalid Goal Amount data.'),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
-                                                    child: Text('Close'),
+                                                    child: const Text('Close'),
                                                   ),
                                                 ],
                                               );
@@ -700,9 +764,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
                                             // If both history and parsed goal_amount are present, show the chart
                                             return AlertDialog(
-                                              title: Text(
+                                              title: const Text(
                                                   'History vs. Goal Amount'),
-                                              content: Container(
+                                              content: SizedBox(
                                                 height: 300, //  height
                                                 child: StackedBarChart(
                                                   // Pass your history and parsed goal_amount data here
@@ -716,7 +780,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text('Close'),
+                                                  child: const Text('Close'),
                                                 ),
                                               ],
                                             );
@@ -736,7 +800,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: Text('Delete Jar?'),
+                                            title: const Text('Delete Jar?'),
                                             content: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
@@ -745,7 +809,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
-                                                  child: Text('Close'),
+                                                  child: const Text('Close'),
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
@@ -753,7 +817,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                                         currentItem['key']);
                                                     Navigator.of(context).pop();
                                                   },
-                                                  child: Text('Confirm'),
+                                                  child: const Text('Confirm'),
                                                 ),
                                               ],
                                             ),

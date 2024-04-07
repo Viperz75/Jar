@@ -1,8 +1,6 @@
-import 'package:expense_jar/components/pages/privacy_policy.dart';
-import 'package:expense_jar/mainScreen/home.dart';
-import 'package:expense_jar/theme/theme_manager.dart';
+import 'package:jar_app/components/pages/privacy_policy.dart';
+import 'package:jar_app/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
-import '../theme/theme_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,23 +13,41 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+
+  // Define the launchEmail function outside of the build method
+  void launchEmail() async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'akash@alphaxb.com',
+      queryParameters: {
+        'subject': 'Jar Feedback',
+      },
+    );
+
+    if (await canLaunch(emailLaunchUri.toString())) {
+      await launchUrl(emailLaunchUri.toString() as Uri);
+    } else {
+      throw 'Could not launch $emailLaunchUri';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
               ThemeModeType.dark
           ? Colors.black // Set red background color for dark mode
-          : Color(0xfff5f7ec),
+          : const Color(0xfff5f7ec),
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
         backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
                 ThemeModeType.dark
             ? Colors.black // Set red background color for dark mode
-            : Color(0xfff5f7ec),
+            : const Color(0xfff5f7ec),
       ),
       body: Column(
         children: [
-          Row(
+          const Row(
             children: [
               SizedBox(width: 10.0),
               // Icon(Icons.wb_twilight),
@@ -59,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text(
+                        title: const Text(
                           'Theme',
                           style: TextStyle(
                             fontSize: 18.0,
@@ -69,7 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             RadioListTile(
-                              title: Text('Light Mode'),
+                              title: const Text('Light Mode'),
                               value: ThemeModeType.light,
                               groupValue: Provider.of<ThemeProvider>(context)
                                   .themeModeType,
@@ -81,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               },
                             ),
                             RadioListTile(
-                              title: Text('Dark Mode'),
+                              title: const Text('Dark Mode'),
                               value: ThemeModeType.dark,
                               groupValue: Provider.of<ThemeProvider>(context)
                                   .themeModeType,
@@ -93,7 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               },
                             ),
                             RadioListTile(
-                              title: Text('System Mode'),
+                              title: const Text('System Mode'),
                               value: ThemeModeType.system,
                               groupValue: Provider.of<ThemeProvider>(context)
                                   .themeModeType,
@@ -111,7 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
                         ],
                       ),
@@ -124,10 +140,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               ThemeModeType.dark
                           ? Icons.dark_mode_rounded
                           : Icons.light_mode_rounded),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text('Theme',
+                      const Text('Theme',
                           style: TextStyle(
                             fontSize: 16.0,
                           )),
@@ -137,7 +153,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
-          Row(
+          const Row(
             children: [
               SizedBox(width: 10.0),
               // Icon(Icons.wb_twilight),
@@ -160,7 +176,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Icon(
                           Icons.apps_rounded,
                           color: Provider.of<ThemeProvider>(context)
@@ -169,7 +185,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               ? Colors.white
                               : Colors.black,
                         ),
-                        SizedBox(width: 10.0),
+                        const SizedBox(width: 10.0),
                         Text(
                           'Apps',
                           style: TextStyle(
@@ -194,28 +210,14 @@ class _SettingsPageState extends State<SettingsPage> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    void _launchEmail() async {
-                      final Uri _emailLaunchUri = Uri(
-                        scheme: 'mailto',
-                        path: 'akash@alphaxb.com',
-                        queryParameters: {
-                          'subject': 'Jar Feedback',
-                        },
-                      );
-
-                      if (await canLaunch(_emailLaunchUri.toString())) {
-                        await launch(_emailLaunchUri.toString());
-                      } else {
-                        throw 'Could not launch $_emailLaunchUri';
-                      }
-                    }
+                    launchEmail();
                   },
                   child: SizedBox(
                     height: 50.0,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Icon(
                           Icons.mail_rounded,
                           color: Provider.of<ThemeProvider>(context)
@@ -224,7 +226,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               ? Colors.white
                               : Colors.black,
                         ),
-                        SizedBox(width: 10.0),
+                        const SizedBox(width: 10.0),
                         Text(
                           'Contact me',
                           style: TextStyle(
@@ -247,7 +249,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PrivacyPolicy(),
+                        builder: (context) => const PrivacyPolicy(),
                       ),
                     );
                   },
@@ -256,7 +258,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Icon(
                           Icons.security_rounded,
                           color: Provider.of<ThemeProvider>(context)
@@ -265,7 +267,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               ? Colors.white
                               : Colors.black,
                         ),
-                        SizedBox(width: 10.0),
+                        const SizedBox(width: 10.0),
                         Text(
                           'Privacy Policy',
                           style: TextStyle(
@@ -296,7 +298,7 @@ class _SettingsPageState extends State<SettingsPage> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
+              return const AlertDialog(
                 title: Text('About the App'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -325,7 +327,7 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(width: 5.0),
+              const SizedBox(width: 5.0),
               Icon(
                 Icons.person,
                 color: Provider.of<ThemeProvider>(context).themeModeType ==
@@ -333,7 +335,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ? Colors.white
                     : Colors.black,
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Text(
                 'About',
                 style: TextStyle(

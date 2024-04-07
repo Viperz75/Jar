@@ -6,7 +6,7 @@ class StackedBarChart extends StatelessWidget {
   final List<double> history;
   final double goalAmount;
 
-  const StackedBarChart({
+  const StackedBarChart({super.key, 
     required this.history,
     required this.goalAmount,
   });

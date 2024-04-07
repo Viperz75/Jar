@@ -1,5 +1,4 @@
-import 'package:expense_jar/components/settings.dart';
-import 'package:expense_jar/mainScreen/home.dart';
+import 'package:jar_app/mainScreen/home.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +43,7 @@ class _JarState extends State<Jar> {
                 ? ThemeMode.dark
                 : ThemeMode.light,
             theme: themeProvider.themeData,
-            home: Home(),
+            home: const Home(),
           );
         },
       ),

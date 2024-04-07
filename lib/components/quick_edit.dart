@@ -43,10 +43,10 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
     String enteredText = enterred_value.text.toString();
     if (enteredText.isNotEmpty) {
       double enteredValue = double.parse(enteredText);
-      double _added_value = widget.savedAmount + enteredValue;
-      widget.onUpdateSavedAmount(_added_value, enteredValue);
+      double addedValue = widget.savedAmount + enteredValue;
+      widget.onUpdateSavedAmount(addedValue, enteredValue);
 
-      return _added_value;
+      return addedValue;
     }
 
     // Handle case where entered text is empty
@@ -57,9 +57,9 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
     String enteredText = enterred_value.text.toString();
     if (enteredText.isNotEmpty) {
       double enteredValue = double.parse(enteredText);
-      double _added_value = widget.savedAmount - enteredValue;
-      widget.onUpdateSavedAmount(_added_value, -enteredValue);
-      return _added_value;
+      double addedValue = widget.savedAmount - enteredValue;
+      widget.onUpdateSavedAmount(addedValue, -enteredValue);
+      return addedValue;
     }
     // Handle case where entered text is empty
     return widget.savedAmount;
@@ -101,7 +101,7 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
                   decoration: InputDecoration(
                     labelText: "Amount",
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1.5),
+                      borderSide: const BorderSide(width: 1.5),
                       borderRadius: BorderRadius.circular(
                         10.0,
                       ),
@@ -116,12 +116,11 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
                     SizedBox(
                       width: 145.0,
                       child: ElevatedButton(
-                        child: Text('Minus'),
                         style: ButtonStyle(
                           foregroundColor:
                               MaterialStateProperty.all(Colors.black),
                           backgroundColor: MaterialStateProperty.all(
-                            Color(0xffff9c96),
+                            const Color(0xffff9c96),
                           ),
                         ),
                         onPressed: () {
@@ -130,6 +129,7 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
                             enterred_value.text = '';
                           });
                         },
+                        child: const Text('Minus'),
                       ),
                     ),
                     const SizedBox(
@@ -138,7 +138,6 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
                     SizedBox(
                       width: 145.0,
                       child: ElevatedButton(
-                        child: Text('Add'),
                         style: ButtonStyle(
                           foregroundColor:
                               MaterialStateProperty.all(Colors.black),
@@ -154,6 +153,7 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
                             enterred_value.text = '';
                           });
                         },
+                        child: const Text('Add'),
                       ),
                     ),
                   ],

@@ -1,4 +1,4 @@
-package com.twisnmen.expense_jar
+package com.alphaxb.jar_app
 
 import io.flutter.embedding.android.FlutterActivity
 

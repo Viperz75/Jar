@@ -6,7 +6,7 @@ class ExpandableDeadlineButton extends StatefulWidget {
   final double savedAmount;
   final double goalAmount;
 
-  const ExpandableDeadlineButton({
+  const ExpandableDeadlineButton({super.key, 
     required this.deadline,
     required this.savedAmount,
     required this.goalAmount,

@@ -1,4 +1,4 @@
-name: expense_jar
+name: jar_app
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -43,9 +43,6 @@ dependencies:
   adaptive_theme: ^3.6.0
   provider: ^6.1.2
   url_launcher: ^6.0.0
-
-
-
 
 dev_dependencies:
   flutter_test:

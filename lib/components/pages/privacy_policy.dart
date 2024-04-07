@@ -11,17 +11,17 @@ class PrivacyPolicy extends StatelessWidget {
       backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
               ThemeModeType.dark
           ? Colors.black // Set red background color for dark mode
-          : Color(0xfff5f7ec),
+          : const Color(0xfff5f7ec),
       appBar: AppBar(
-        title: Text('Privacy Policy'),
+        title: const Text('Privacy Policy'),
         backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
                 ThemeModeType.dark
             ? Colors.black // Set red background color for dark mode
-            : Color(0xfff5f7ec),
+            : const Color(0xfff5f7ec),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
