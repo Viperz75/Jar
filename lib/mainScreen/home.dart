@@ -1,3 +1,4 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jar_app/components/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -522,14 +523,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const SettingsPage()));
               },
-              icon: const Icon(
-                Icons.settings,
-                size: 25.0,
-              ),
+              icon: const FaIcon(FontAwesomeIcons.gear),
             ),
             FloatingActionButton(
               backgroundColor: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff5e5c6a) : const Color(0xfffcd9c3),
-              child: const Icon(Icons.add),
+              child: const FaIcon(FontAwesomeIcons.plus),
               onPressed: () {
                 openAddDialog(context, null);
               },
@@ -543,7 +541,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Show this when there's no jar
-                  Image.asset('images/jar_background.png'),
+                  Image.asset('images/jar_background.png', scale: 3,),
                   const SizedBox(height: 8.0),
                   const Text(
                     'Add a new jar by clicking the button below!',
@@ -696,7 +694,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                       openAddDialog(
                                           context, currentItem['key']);
                                     },
-                                    icon: const Icon(Icons.edit),
+                                    icon: const Icon(Icons.edit, size: 30.0),
                                   ),
                                   const SizedBox(width: 10),
                                   IconButton(
@@ -748,7 +746,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         ),
                                       );
                                     },
-                                    icon: const Icon(Icons.history),
+                                    icon: const Icon(Icons.history, size: 30.0,),
                                   ),
                                   IconButton(
                                     onPressed: () {
@@ -803,7 +801,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                                   'History vs. Goal Amount'),
                                               content: SizedBox(
                                                 height: 300, //  height
-                                                child: StackedBarChart(
+                                                child: LineChartWidget(
                                                   // Pass your history and parsed goal_amount data here
                                                   history:
                                                       currentItem['history'],
@@ -823,8 +821,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         },
                                       );
                                     },
-                                    icon: const Icon(
-                                        Icons.stacked_bar_chart_rounded),
+                                    icon: const FaIcon(FontAwesomeIcons.chartLine),
                                   ),
 
                                   const SizedBox(width: 10),
@@ -860,7 +857,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         },
                                       );
                                     },
-                                    icon: const Icon(Icons.delete_outline),
+                                    icon: const Icon(Icons.delete, size: 30.0,),
                                   )
                                 ],
                               ),

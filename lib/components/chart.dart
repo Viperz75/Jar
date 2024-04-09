@@ -1,46 +1,69 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-
-class StackedBarChart extends StatelessWidget {
+class LineChartWidget extends StatelessWidget {
   final List<double> history;
   final double goalAmount;
 
-  const StackedBarChart({super.key, 
+  final List<Color> gradientColors = [
+    const Color(0xff23b6e6),
+    const Color(0xff02d39a),
+  ];
+
+  LineChartWidget({
+    Key? key,
     required this.history,
     required this.goalAmount,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        alignment: BarChartAlignment.spaceAround,
-        maxY: goalAmount, // Set maximum Y value to the goal amount
-        barGroups: [
-          BarChartGroupData(
-            x: 0,
-            barsSpace: 4,
-            barRods: [
-              BarChartRodData(
-                y: goalAmount, // Set the goal amount as the height of the first bar
-                colors: [Colors.blue], // Color for the goal amount bar
-              ),
+    double maxY = goalAmount;
+    for (double value in history) {
+      if (value > maxY) {
+        maxY = value;
+      }
+    }
+
+    double yAxisInterval = maxY / 6;
+    List<double> yValues = List.generate(7, (index) => index * yAxisInterval);
+
+    return LineChart(
+      LineChartData(
+        minY: 0,
+        maxY: maxY,
+        lineBarsData: [
+          LineChartBarData(
+            spots: [
+              FlSpot(0, goalAmount),
             ],
+            isCurved: true,
+            colors: [Colors.blue],
+            barWidth: 4,
           ),
-          BarChartGroupData(
-            x: 1,
-            barsSpace: 4,
-            barRods: history.map((value) {
-              return BarChartRodData(
-                y: value,
-                colors: [Colors.green], // Color for history bars
-              );
+          LineChartBarData(
+            spots: history.asMap().entries.map((entry) {
+              return FlSpot(entry.key.toDouble() + 1, entry.value);
             }).toList(),
+            isCurved: true,
+            colors: gradientColors,
+            barWidth: 4,
+            belowBarData: BarAreaData(
+              show: true,
+              colors: gradientColors.map(
+                  (Color) => Color.withOpacity(0.3)
+              ).toList(),
+            ),
           ),
         ],
         titlesData: FlTitlesData(
-          leftTitles: SideTitles(showTitles: false),
+          leftTitles: SideTitles(
+            showTitles: true,
+            interval: yAxisInterval,
+            getTitles: (value) {
+              return value.toStringAsFixed(0);
+            },
+          ),
           bottomTitles: SideTitles(
             showTitles: true,
             getTitles: (value) {

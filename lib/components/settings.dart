@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jar_app/components/currency_selector.dart';
 import 'package:jar_app/components/pages/privacy_policy.dart';
 import 'package:jar_app/theme/theme_manager.dart';
@@ -7,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/settings_section.dart';
+import 'biometric_provider.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -17,20 +20,15 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
 
-  // Define the launchEmail function outside of the build method
-  void launchEmail() async {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: 'akash@alphaxb.com',
-      queryParameters: {
-        'subject': 'Jar Feedback',
-      },
-    );
+  Future<void> _saveBiometricSettings(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('biometricEnabled', value);
+  }
 
-    if (await canLaunch(emailLaunchUri.toString())) {
-      await launchUrl(emailLaunchUri.toString() as Uri);
-    } else {
-      throw 'Could not launch $emailLaunchUri';
+  _launchURL() async {
+    final Uri url = Uri.parse('https://akashmahmud.eu.org/contact');
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
     }
   }
 
@@ -49,6 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final biometricProvider = Provider.of<BiometricProvider>(context);
     return Scaffold(
       backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
               ThemeModeType.dark
@@ -63,19 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Column(
         children: [
-          const Row(
-            children: [
-              SizedBox(width: 10.0),
-              // Icon(Icons.wb_twilight),
-              SizedBox(width: 10.0),
-              Text(
-                'Appearance',
-                style: TextStyle(
-                  fontSize: 17.0,
-                ),
-              ),
-            ],
-          ),
+          settingsSection(text: 'Appearance'),
           Row(
             children: [
               Expanded(
@@ -154,7 +141,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(Provider.of<ThemeProvider>(context).themeModeType ==
+                          Icon(Provider.of<ThemeProvider>(context)
+                                      .themeModeType ==
                                   ThemeModeType.dark
                               ? Icons.dark_mode_rounded
                               : Icons.light_mode_rounded),
@@ -174,7 +162,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           children: [
                             Text(
                               getThemeModeString(
-                                  Provider.of<ThemeProvider>(context).themeModeType),
+                                  Provider.of<ThemeProvider>(context)
+                                      .themeModeType),
                               style: TextStyle(fontSize: 16.0),
                             ),
                           ],
@@ -186,19 +175,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
-          const Row(
-            children: [
-              SizedBox(width: 10.0),
-              // Icon(Icons.wb_twilight),
-              SizedBox(width: 10.0),
-              Text(
-                'Functionality',
-                style: TextStyle(
-                  fontSize: 17.0,
-                ),
-              ),
-            ],
-          ),
+          settingsSection(text: 'Functionality'),
           Row(
             children: [
               Expanded(
@@ -217,11 +194,19 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const SizedBox(width: 5.0),
-                        Icon(
-                          Icons.money_rounded,
+                        // Icon(
+                        //   Icons.money_rounded,
+                        //   color: Provider.of<ThemeProvider>(context)
+                        //       .themeModeType ==
+                        //       ThemeModeType.dark
+                        //       ? Colors.white
+                        //       : Colors.black,
+                        // ),
+                        FaIcon(
+                          FontAwesomeIcons.coins,
                           color: Provider.of<ThemeProvider>(context)
-                              .themeModeType ==
-                              ThemeModeType.dark
+                                      .themeModeType ==
+                                  ThemeModeType.dark
                               ? Colors.white
                               : Colors.black,
                         ),
@@ -231,8 +216,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Provider.of<ThemeProvider>(context)
-                                .themeModeType ==
-                                ThemeModeType.dark
+                                        .themeModeType ==
+                                    ThemeModeType.dark
                                 ? Colors.white
                                 : Colors.black,
                           ),
@@ -244,19 +229,54 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
-          const Row(
+          settingsSection(text: 'Security'),
+          Row(
             children: [
-              SizedBox(width: 10.0),
-              // Icon(Icons.wb_twilight),
-              SizedBox(width: 10.0),
-              Text(
-                'About us',
-                style: TextStyle(
-                  fontSize: 17.0,
+              Expanded(
+                child: TextButton(
+                  onPressed: () {},
+                  child: SizedBox(
+                    height: 50.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 5.0),
+                        Icon(
+                          Icons.touch_app_rounded,
+                          color: Provider.of<ThemeProvider>(context)
+                              .themeModeType ==
+                              ThemeModeType.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        const SizedBox(width: 10.0),
+                        Text(
+                          'Enable biometric login?',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Provider.of<ThemeProvider>(context)
+                                .themeModeType ==
+                                ThemeModeType.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        SizedBox(width: 105.0,),
+                        Switch(
+                          value: biometricProvider.biometricEnabled,
+                          onChanged: (value) {
+                            biometricProvider.setBiometricEnabled(value);
+                            _saveBiometricSettings(value);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
+          settingsSection(text: 'About us'),
           Row(
             children: [
               Expanded(
@@ -301,7 +321,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    launchEmail();
+                    _launchURL();
                   },
                   child: SizedBox(
                     height: 50.0,
@@ -444,3 +464,5 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
+
+

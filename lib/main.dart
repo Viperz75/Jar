@@ -3,7 +3,9 @@ import 'package:jar_app/mainScreen/home.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'components/biometric_provider.dart';
 import 'components/currencies.dart';
+import 'components/pages/login_page.dart';
 import 'theme/theme_manager.dart';
 
 void main() async {
@@ -54,9 +56,10 @@ class _JarState extends State<Jar> {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => CurrencyNotifier()),
+        ChangeNotifierProvider(create: (_) => BiometricProvider()),
       ],
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, _) {
+      child: Consumer2<ThemeProvider, BiometricProvider>(
+        builder: (context, themeProvider, biometricProvider, _) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             themeMode: themeProvider.themeModeType == ThemeModeType.system
@@ -65,7 +68,9 @@ class _JarState extends State<Jar> {
                 ? ThemeMode.dark
                 : ThemeMode.light,
             theme: themeProvider.themeData,
-            home: const Home(),
+            home: biometricProvider.biometricEnabled
+                ? LoginPage() // Replace LoginPage with your actual login page
+                : const Home(),
           );
         },
       ),

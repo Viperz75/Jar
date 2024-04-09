@@ -44,6 +44,9 @@ dependencies:
   provider: ^6.1.2
   url_launcher: ^6.0.0
   currency_picker: ^2.0.21
+  font_awesome_flutter: ^10.7.0
+  local_auth: ^2.2.0
+
 
 dev_dependencies:
   flutter_test:
