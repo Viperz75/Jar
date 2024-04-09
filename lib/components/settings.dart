@@ -263,6 +263,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         SizedBox(width: 105.0,),
                         Switch(
+                          activeColor: Colors.greenAccent,
                           value: biometricProvider.biometricEnabled,
                           onChanged: (value) {
                             biometricProvider.setBiometricEnabled(value);

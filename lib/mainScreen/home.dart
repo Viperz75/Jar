@@ -512,6 +512,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             Text('$totalGoal/$totalSaved'),
           ],
         ),
+        automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: BottomAppBar(
         color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff000c15) : Colors.white,
@@ -658,6 +659,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                     itemKey: currentItem['key'],
                                     savedAmount: double.parse(
                                         currentItem['saved_amount']),
+                                    goalAmount: double.parse(
+                                        currentItem['goal_amount']),
                                     onUpdateSavedAmount:
                                         (newValue, enteredValues) {
                                       var convertToString = newValue.toString();

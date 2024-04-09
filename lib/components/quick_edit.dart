@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class MyDropdownTextField extends StatefulWidget {
   final itemKey;
   final savedAmount;
+  final goalAmount;
   final void Function(double newValue, double enteredValues) onUpdateSavedAmount;
 
   const MyDropdownTextField({
     Key? key,
     required this.savedAmount,
+    required this.goalAmount,
     required this.itemKey,
     required this.onUpdateSavedAmount,
   }) : super(key: key);
@@ -39,13 +41,39 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
     );
   }
 
+  // double addValue() {
+  //   String enteredText = enterred_value.text.toString();
+  //   if (enteredText.isNotEmpty) {
+  //     double enteredValue = double.parse(enteredText);
+  //     double addedValue = widget.savedAmount + enteredValue;
+  //     widget.onUpdateSavedAmount(addedValue, enteredValue);
+  //
+  //     return addedValue;
+  //   }
+  //
+  //   // Handle case where entered text is empty
+  //   return widget.savedAmount;
+  // }
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
   double addValue() {
     String enteredText = enterred_value.text.toString();
     if (enteredText.isNotEmpty) {
       double enteredValue = double.parse(enteredText);
       double addedValue = widget.savedAmount + enteredValue;
-      widget.onUpdateSavedAmount(addedValue, enteredValue);
 
+      if (addedValue > widget.goalAmount) {
+        showSnackBar("You can't add more than your goal amount");
+        return widget.savedAmount;
+      }
+
+      widget.onUpdateSavedAmount(addedValue, enteredValue);
       return addedValue;
     }
 

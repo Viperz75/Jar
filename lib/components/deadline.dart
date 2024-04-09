@@ -48,7 +48,7 @@ class _ExpandableDeadlineButtonState extends State<ExpandableDeadlineButton> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Save', style: const TextStyle(fontSize: 14),),
+                    Text('Save ', style: const TextStyle(fontSize: 14),),
                     CurrencyWidget(),
                     Text('${calculatePerDaySaving().toStringAsFixed(2)}/day', style: const TextStyle(fontSize: 14)),
                   ],
@@ -57,7 +57,7 @@ class _ExpandableDeadlineButtonState extends State<ExpandableDeadlineButton> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Save', style: const TextStyle(fontSize: 14),),
+                    Text('Save ', style: const TextStyle(fontSize: 14),),
                     CurrencyWidget(),
                     Text('${calculatePerWeekSaving().toStringAsFixed(2)}/week', style: const TextStyle(fontSize: 14)),
                   ],
@@ -66,7 +66,7 @@ class _ExpandableDeadlineButtonState extends State<ExpandableDeadlineButton> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Save', style: const TextStyle(fontSize: 14),),
+                    Text('Save ', style: const TextStyle(fontSize: 14),),
                     CurrencyWidget(),
                     Text('${calculatePerMonthSaving().toStringAsFixed(2)}/month', style: const TextStyle(fontSize: 14)),
                   ],
