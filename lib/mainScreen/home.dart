@@ -417,6 +417,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
               ),
               actions: [
+                TextButton(onPressed: (){ Navigator.pop(context); }, child: Text('Cancel'),),
                 TextButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -462,7 +463,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
 
                   },
-                  child: Text('Save'),
+                  child: Text(itemKey == null ? 'Save' : 'Update',),
                 ),
               ],
               shape: OutlineInputBorder(
@@ -646,6 +647,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                           currentItem['goal_amount'] as String),
                                     ),
                                   const SizedBox(height: 8.0),
+                                  if (double.parse(currentItem['saved_amount'] as String) == double.parse(currentItem['goal_amount'] as String))
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text('Goal has been reached  '),
+                                        FaIcon(FontAwesomeIcons.circleCheck, color: Colors.greenAccent,)
+                                      ],
+                                    ),
                                   // if (double.parse(
                                   //         currentItem['saved_amount']) ==
                                   //     double.parse(currentItem['goal_amount']))
