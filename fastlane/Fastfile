@@ -1,38 +1,51 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
+# Customise this file, documentation can be found here:
+# https://docs.fastlane.tools/actions/
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
 
-# Uncomment the line if you want fastlane to automatically update itself
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
 # update_fastlane
 
-default_platform(:android)
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "2.220.0"
+
+default_platform :android
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
+  before_all do
+  	#ensure_git_status_clean
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
+  lane :listing_only do
+    sh "bash ./remove_unsupported_languages.sh"
+    supply(
+      track: 'production',
+	  package_name: 'com.alphaxb.jar_app',
+      skip_upload_apk: 'true',
+      skip_upload_images: 'true',
+      skip_upload_screenshots: 'true',
+      skip_upload_changelogs: true,
+      skip_upload_aab: 'true',
+	  skip_upload_metadata: 'true'
+    )
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+
+    # slack(
+    #   message: "Successfully deployed new App Update."
+    # )
+  end
+
+  error do |lane, exception|
+    # slack(
+    #   message: exception.message,
+    #   success: false
+    # )
   end
 end
