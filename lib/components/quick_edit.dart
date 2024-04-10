@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 class MyDropdownTextField extends StatefulWidget {
   final itemKey;
   final savedAmount;
-  final goalAmount;
   final void Function(double newValue, double enteredValues) onUpdateSavedAmount;
 
   const MyDropdownTextField({
     Key? key,
     required this.savedAmount,
-    required this.goalAmount,
     required this.itemKey,
     required this.onUpdateSavedAmount,
   }) : super(key: key);
@@ -56,10 +54,10 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
       double enteredValue = double.parse(enteredText);
       double addedValue = widget.savedAmount + enteredValue;
 
-      if (addedValue > widget.goalAmount) {
-        showSnackBar("You can't add more than your goal amount");
-        return widget.savedAmount;
-      }
+      // if (addedValue > widget.goalAmount) {
+      //   showSnackBar("You can't add more than your goal amount");
+      //   return widget.savedAmount;
+      // }
 
       widget.onUpdateSavedAmount(addedValue, enteredValue);
       return addedValue;
@@ -68,6 +66,8 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
     // Handle case where entered text is empty
     return widget.savedAmount;
   }
+
+
 
   double minusValue() {
     String enteredText = enterred_value.text.toString();

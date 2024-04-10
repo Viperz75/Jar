@@ -28,52 +28,59 @@ class LineChartWidget extends StatelessWidget {
     double yAxisInterval = maxY / 6;
     List<double> yValues = List.generate(7, (index) => index * yAxisInterval);
 
-    return LineChart(
-      LineChartData(
-        minY: 0,
-        maxY: maxY,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, goalAmount),
-            ],
-            isCurved: true,
-            colors: [Colors.blue],
-            barWidth: 4,
-          ),
-          LineChartBarData(
-            spots: history.asMap().entries.map((entry) {
-              return FlSpot(entry.key.toDouble() + 1, entry.value);
-            }).toList(),
-            isCurved: true,
-            colors: gradientColors,
-            barWidth: 4,
-            belowBarData: BarAreaData(
-              show: true,
-              colors: gradientColors.map(
-                  (Color) => Color.withOpacity(0.3)
-              ).toList(),
+    // Calculate the width of the chart to fit inside the AlertDialog
+    double chartWidth = MediaQuery.of(context).size.width * 0.8;
+
+    return SizedBox(
+      width: chartWidth,
+      height: 300, // Fixed height for the chart
+      child: LineChart(
+        LineChartData(
+          minY: 0,
+          maxY: maxY,
+          lineBarsData: [
+            LineChartBarData(
+              spots: [
+                FlSpot(0, goalAmount),
+              ],
+              isCurved: true,
+              colors: [Colors.blue],
+              barWidth: 4,
             ),
-          ),
-        ],
-        titlesData: FlTitlesData(
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: yAxisInterval,
-            getTitles: (value) {
-              return value.toStringAsFixed(0);
-            },
-          ),
-          bottomTitles: SideTitles(
-            showTitles: true,
-            getTitles: (value) {
-              if (value == 0) {
-                return 'Goal';
-              } else if (value == 1) {
-                return 'History';
-              }
-              return '';
-            },
+            LineChartBarData(
+              spots: history.asMap().entries.map((entry) {
+                return FlSpot(entry.key.toDouble() + 1, entry.value);
+              }).toList(),
+              isCurved: true,
+              colors: gradientColors,
+              barWidth: 4,
+              belowBarData: BarAreaData(
+                show: true,
+                colors: gradientColors.map(
+                      (Color) => Color.withOpacity(0.3),
+                ).toList(),
+              ),
+            ),
+          ],
+          titlesData: FlTitlesData(
+            leftTitles: SideTitles(
+              showTitles: true,
+              interval: yAxisInterval,
+              getTitles: (value) {
+                return value.toStringAsFixed(0);
+              },
+            ),
+            bottomTitles: SideTitles(
+              showTitles: true,
+              getTitles: (value) {
+                if (value == 0) {
+                  return '';
+                } else if (value == 1) {
+                  return '';
+                }
+                return '';
+              },
+            ),
           ),
         ),
       ),

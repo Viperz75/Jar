@@ -571,21 +571,26 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                           currentItem['goal_amount'] as String),
                                     ),
                                   const SizedBox(height: 8.0),
-                                  if (double.parse(currentItem['saved_amount'] as String) == double.parse(currentItem['goal_amount'] as String))
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text('Goal has been reached  '),
-                                        FaIcon(FontAwesomeIcons.circleCheck, color: Colors.greenAccent,)
-                                      ],
-                                    ),
-                                  //Quick Edit Button
+                currentItem['goal_amount'] != null && currentItem['goal_amount'].toString().isNotEmpty
+                ? // Code for when goal amount is present
+                double.parse(currentItem['saved_amount'] as String) == double.parse(currentItem['goal_amount'] as String)
+                ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text('Goal has been reached  '),
+                FaIcon(FontAwesomeIcons.circleCheck, color: Provider.of<ThemeProvider>(context)
+                    .themeModeType ==
+                    ThemeModeType.dark
+                    ? Colors.greenAccent
+                    : Colors.greenAccent[700],)
+                ],
+                )
+                    : SizedBox() // Return an empty SizedBox if goal is not reached
+                    : Text(''),
                                   MyDropdownTextField(
                                     itemKey: currentItem['key'],
                                     savedAmount: double.parse(
                                         currentItem['saved_amount']),
-                                    goalAmount: double.parse(
-                                        currentItem['goal_amount']),
                                     onUpdateSavedAmount:
                                         (newValue, enteredValues) {
                                       var convertToString = newValue.toString();
@@ -730,7 +735,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                               content: SizedBox(
                                                 height: 300, //  height
                                                 child: LineChartWidget(
-                                                  // Pass your history and parsed goal_amount data here
                                                   history:
                                                       currentItem['history'],
                                                   goalAmount: goalAmount,
