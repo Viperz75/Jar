@@ -1,0 +1,9 @@
+Version: v1.0.8
+Release Date: 2024-04-10
+Enhancements:
+
+* More Flexible Saving  - Previously, adding amounts was disabled after reaching the goal. This functionality has been adjusted to allow you to continue saving even after reaching your target, offering more flexibility in managing your savings.
+
+* Save Without a Goal - You can now add savings amounts without specifying a goal amount. This provides more freedom for tracking general savings that aren't tied to a specific target.
+
+* Improved Light Mode Colors - The color scheme in light mode has been adjusted to enhance visual clarity and provide a more pleasing user experience.
