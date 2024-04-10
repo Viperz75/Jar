@@ -41,19 +41,7 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
     );
   }
 
-  // double addValue() {
-  //   String enteredText = enterred_value.text.toString();
-  //   if (enteredText.isNotEmpty) {
-  //     double enteredValue = double.parse(enteredText);
-  //     double addedValue = widget.savedAmount + enteredValue;
-  //     widget.onUpdateSavedAmount(addedValue, enteredValue);
-  //
-  //     return addedValue;
-  //   }
-  //
-  //   // Handle case where entered text is empty
-  //   return widget.savedAmount;
-  // }
+
   void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../utils/settings_section.dart';
 import 'biometric_provider.dart';
 
@@ -51,13 +50,13 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
               ThemeModeType.dark
-          ? Colors.black // Set red background color for dark mode
+          ? Colors.black
           : const Color(0xfff5f7ec),
       appBar: AppBar(
         title: const Text('Settings'),
         backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
                 ThemeModeType.dark
-            ? Colors.black // Set red background color for dark mode
+            ? Colors.black
             : const Color(0xfff5f7ec),
       ),
       body: Column(
@@ -194,14 +193,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const SizedBox(width: 5.0),
-                        // Icon(
-                        //   Icons.money_rounded,
-                        //   color: Provider.of<ThemeProvider>(context)
-                        //       .themeModeType ==
-                        //       ThemeModeType.dark
-                        //       ? Colors.white
-                        //       : Colors.black,
-                        // ),
                         FaIcon(
                           FontAwesomeIcons.coins,
                           color: Provider.of<ThemeProvider>(context)

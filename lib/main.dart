@@ -26,32 +26,9 @@ class Jar extends StatefulWidget {
 
 class _JarState extends State<Jar> {
 
-  // This widget is the root of your application.
+  // This widget is the root of application.
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   debugShowCheckedModeBanner: false,
-    //   theme: ThemeData.light(),
-    //   darkTheme: ThemeData.dark(),
-    //   home: SettingsPage(),
-    // );
-    // return ChangeNotifierProvider(
-    //   create: (_) => ThemeProvider(),
-    //   child: Consumer<ThemeProvider>(
-    //     builder: (context, themeProvider, _) {
-    //       return MaterialApp(
-    //         debugShowCheckedModeBanner: false,
-    //         themeMode: themeProvider.themeModeType == ThemeModeType.system
-    //             ? ThemeMode.system
-    //             : themeProvider.themeModeType == ThemeModeType.dark
-    //             ? ThemeMode.dark
-    //             : ThemeMode.light,
-    //         theme: themeProvider.themeData,
-    //         home: const Home(),
-    //       );
-    //     },
-    //   ),
-    // );
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
@@ -69,7 +46,7 @@ class _JarState extends State<Jar> {
                 : ThemeMode.light,
             theme: themeProvider.themeData,
             home: biometricProvider.biometricEnabled
-                ? LoginPage() // Replace LoginPage with your actual login page
+                ? LoginPage()
                 : const Home(),
           );
         },

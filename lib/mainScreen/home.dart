@@ -11,7 +11,6 @@ import '../components/chart.dart';
 import '../components/quick_edit.dart';
 import '../components/deadline.dart';
 import '../components/currencies.dart';
-
 import '../theme/theme_manager.dart';
 
 class Home extends StatefulWidget {
@@ -126,23 +125,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     await calculateGoalAmount();
   }
 
-  // Future<void> _update_item(
-  //     int itemKey, Map<String, dynamic> item, historyValue) async {
-  //   var existingItem = _jarBox.get(itemKey);
-  //
-  //   // Update the jar item
-  //   await _jarBox.put(itemKey, item);
-  //
-  //   // Add the updated saved_amount to the history
-  //   List<double> history = existingItem['history'] ?? [];
-  //   // history.add(double.parse(item['saved_amount']));
-  //   history.add(historyValue);
-  //   item['history'] = history;
-  //
-  //   _refreshItems();
-  //   await calculateSavedAmount();
-  //   await calculateGoalAmount();
-  // }
   Future<void> _update_item(
     int itemKey,
     Map<String, dynamic> newItem,
@@ -354,63 +336,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             labelText: 'Deadline (Optional)',
                           ),
                         ),
-                        // const SizedBox(height: 80),
-                        // SizedBox(
-                        //   width: 200,
-                        //   child: ElevatedButton(
-                        //     onPressed: () async {
-                        //       if (_formKey.currentState!.validate()) {
-                        //         // Form is valid, proceed with saving/updating
-                        //         // Your saving/updating logic here
-                        //         if (itemKey == null) {
-                        //           _createItem({
-                        //             "name": _jar_name.text,
-                        //             "saved_amount": _saved.text,
-                        //             "goal_amount": _goal.text,
-                        //             "deadline": _dateController.text,
-                        //             'history':
-                        //             [], // Initialize history as empty list
-                        //           });
-                        //         }
-                        //
-                        //         if (itemKey != null) {
-                        //           Map<String, dynamic> existingItem =
-                        //           _items.firstWhere(
-                        //                   (element) => element['key'] == itemKey);
-                        //           await _update_item(
-                        //             itemKey,
-                        //             {
-                        //               'name': _jar_name.text.trim(),
-                        //               'saved_amount': _saved.text.trim(),
-                        //               'goal_amount': _goal.text.trim(),
-                        //               'deadline': _dateController.text.trim(),
-                        //               'history': existingItem[
-                        //               'history'], // Preserve the existing history
-                        //             },
-                        //             // Pass a null value as the history value since no change is made to saved amount or goal amount
-                        //             0.0,
-                        //           );
-                        //         }
-                        //
-                        //         // clearing text field
-                        //         _jar_name.text = '';
-                        //         _saved.text = '';
-                        //         _goal.text = '';
-                        //         _dateController.text = '';
-                        //
-                        //         Navigator.of(context).pop();}
-                        //
-                        //
-                        //     },
-                        //     child: Text(
-                        //       itemKey == null ? 'Save' : 'Update',
-                        //       style: TextStyle(
-                        //         color: Provider.of<ThemeProvider>(context).themeModeType ==
-                        //             ThemeModeType.dark ? Colors.white : Colors.black,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -422,7 +347,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       // Form is valid, proceed with saving/updating
-                      // Your saving/updating logic here
                       if (itemKey == null) {
                         _createItem({
                           "name": _jar_name.text,
@@ -497,13 +421,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
           ThemeModeType.dark
-          ? Colors.black // Set red background color for dark mode
+          ? Colors.black
           : const Color(0xfff5f7ec),
       appBar: AppBar(
         // backgroundColor: Color(0xfff5f7ec),
         backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
                 ThemeModeType.dark
-            ? Colors.black // Set red background color for dark mode
+            ? Colors.black
             : const Color(0xfff5f7ec),
         title: Row(
           children: [
@@ -655,15 +579,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         FaIcon(FontAwesomeIcons.circleCheck, color: Colors.greenAccent,)
                                       ],
                                     ),
-                                  // if (double.parse(
-                                  //         currentItem['saved_amount']) ==
-                                  //     double.parse(currentItem['goal_amount']))
-                                  //   Text('Goal has been reached ✔'),
-                                  // if (double.parse(
-                                  //         currentItem['saved_amount']) >
-                                  //     double.parse(currentItem['goal_amount']))
-                                  //   Text('Goal has been reached ✔'),
-                                  // TODO: Quick Edit Button
+                                  //Quick Edit Button
                                   MyDropdownTextField(
                                     itemKey: currentItem['key'],
                                     savedAmount: double.parse(

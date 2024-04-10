@@ -37,9 +37,6 @@ class _LoginPageState extends State<LoginPage> {
     try {
       isAuthenticated = await _localAuthentication.authenticate(
         localizedReason: 'Authenticate to login',
-        // The biometricOnly parameter is no longer needed in the latest version of local_auth package.
-        // It's automatically set to true when biometric authentication is requested.
-        // useErrorDialogs parameter is also deprecated.
       );
     } catch (e) {
       print('Error authenticating: $e');
@@ -63,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
             _authenticateBiometrically();
           },
           icon: FaIcon(FontAwesomeIcons.lock)
-        ), // Show a loading indicator while authenticating.
+        ),
       ),
     );
   }
