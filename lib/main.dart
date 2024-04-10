@@ -1,4 +1,3 @@
-import 'package:jar_app/components/settings.dart';
 import 'package:jar_app/mainScreen/home.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
