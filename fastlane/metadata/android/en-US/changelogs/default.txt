@@ -1,8 +1,0 @@
-Hey 👋
-Jar is in active development.
-I'm working on new features every day.
-If you have some good ideas or find any bugs, please let me know 😊!
-
-Update contain bugfixes, performance improvements and maybe new features.
-
-A detailed changelog is always available on GitHub.

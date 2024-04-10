@@ -1,1 +1,0 @@
-Keep track of your savings. Keep them in a JAR.

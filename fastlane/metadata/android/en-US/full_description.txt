@@ -1,9 +1,0 @@
-<i>Jar</i> is a personal finance app built with Flutter that empowers you to take control of your savings. Create personalized savings jars, secure them with biometric authentication, and easily manage your finances.
-Features:
-
-- Create Savings Jars: Set up dedicated jars for different goals, be it a dream vacation, a rainy day fund, or anything else you're saving for.
-- Biometric Lock: Ensure the security of your savings with fingerprint or face recognition authentication (depending on your device's capabilities).
-- Multiple Currency Support: Track your savings in various currencies. JAR flexibly adapts to your needs.
-- Light, Dark, and System Mode Themes: Choose the theme that best suits your preferences and optimizes viewing comfort.
-- Transaction History: View a comprehensive record of all your deposits and withdrawals for each savings jar.
-- Visualization: Gain valuable insights with clear graphs that illustrate your saving patterns and progress over time.
