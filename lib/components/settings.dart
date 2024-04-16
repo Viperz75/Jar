@@ -194,7 +194,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         const SizedBox(width: 5.0),
                         FaIcon(
-                          FontAwesomeIcons.coins,
+                          FontAwesomeIcons.sackDollar,
                           color: Provider.of<ThemeProvider>(context)
                                       .themeModeType ==
                                   ThemeModeType.dark
@@ -229,30 +229,33 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: SizedBox(
                     height: 50.0,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(width: 5.0),
-                        Icon(
-                          Icons.touch_app_rounded,
-                          color: Provider.of<ThemeProvider>(context)
-                              .themeModeType ==
-                              ThemeModeType.dark
-                              ? Colors.white
-                              : Colors.black,
+                        Row(
+                          children: [
+                            const SizedBox(width: 5.0),
+                            Icon(
+                              CupertinoIcons.lock_shield_fill,
+                              color: Provider.of<ThemeProvider>(context)
+                                  .themeModeType ==
+                                  ThemeModeType.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                            const SizedBox(width: 10.0),
+                            Text(
+                              'App lock',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Provider.of<ThemeProvider>(context)
+                                    .themeModeType ==
+                                    ThemeModeType.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 10.0),
-                        Text(
-                          'Enable biometric login?',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Provider.of<ThemeProvider>(context)
-                                .themeModeType ==
-                                ThemeModeType.dark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                        SizedBox(width: 105.0,),
                         Switch(
                           activeColor: Provider.of<ThemeProvider>(context)
                               .themeModeType ==
@@ -272,6 +275,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
+
           settingsSection(text: 'About us'),
           Row(
             children: [

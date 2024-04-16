@@ -8,12 +8,13 @@
 
 [![API](https://img.shields.io/badge/API-34%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=34)
 [![Github Downloads](https://img.shields.io/github/downloads/Viperz75/Jar/total.svg?label=GitHub%20Downloads&logo=github)](https://github.com/Viperz75/Jar/edit/main/README.md#download)
+![GitHub License](https://img.shields.io/github/license/Viperz75/Jar?style=flat&logo=github&label=License)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Viperz75/Jar)
 
-<br />
-
+<div id="github-badge" align="center>
 <a href="https://github.com/Viperz75/Jar/releases/"> 
 <img alt="GitHub Badge" src="promotional/github-badge.png" height="60px">
-</a>
+</a></div>
 
 <br />
 

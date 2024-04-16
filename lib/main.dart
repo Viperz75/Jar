@@ -30,7 +30,7 @@ class _JarState extends State<Jar> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider(context)),
         ChangeNotifierProvider(create: (_) => CurrencyNotifier()),
         ChangeNotifierProvider(create: (_) => BiometricProvider()),
       ],

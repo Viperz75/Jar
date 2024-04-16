@@ -434,7 +434,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             // Text('Saved ৳$totalGoal/৳$totalSaved'),
             Text('Saved '),
             CurrencyWidget(), // Include CurrencyWidget here
-            Text('$totalGoal/$totalSaved'),
+            Text('$totalGoal/'),
+            CurrencyWidget(),
+            Text('$totalSaved'),
           ],
         ),
         automaticallyImplyLeading: false,
@@ -453,7 +455,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             FloatingActionButton(
               backgroundColor: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff5e5c6a) : const Color(0xfffcd9c3),
-              child: const FaIcon(FontAwesomeIcons.plus),
+              child: const Icon(Icons.add),
               onPressed: () {
                 openAddDialog(context, null);
               },
