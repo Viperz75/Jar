@@ -48,16 +48,16 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final biometricProvider = Provider.of<BiometricProvider>(context);
     return Scaffold(
-      backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
-              ThemeModeType.dark
-          ? Colors.black
-          : const Color(0xfff5f7ec),
+      // backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
+      //         ThemeModeType.dark
+      //     ? Colors.black
+      //     : const Color(0xfff5f7ec),
       appBar: AppBar(
         title: const Text('Settings'),
-        backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
-                ThemeModeType.dark
-            ? Colors.black
-            : const Color(0xfff5f7ec),
+        // backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
+        //         ThemeModeType.dark
+        //     ? Colors.black
+        //     : const Color(0xfff5f7ec),
       ),
       body: Column(
         children: [
@@ -67,11 +67,11 @@ class _SettingsPageState extends State<SettingsPage> {
               Expanded(
                 child: TextButton(
                   style: TextButton.styleFrom(
-                    foregroundColor:
-                        Provider.of<ThemeProvider>(context).themeModeType ==
-                                ThemeModeType.dark
-                            ? Colors.white
-                            : Colors.black,
+                    // foregroundColor:
+                    //     Provider.of<ThemeProvider>(context).themeModeType ==
+                    //             ThemeModeType.dark
+                    //         ? Colors.white
+                    //         : Colors.black,
                   ),
                   onPressed: () {
                     showDialog(
@@ -195,22 +195,22 @@ class _SettingsPageState extends State<SettingsPage> {
                         const SizedBox(width: 5.0),
                         FaIcon(
                           FontAwesomeIcons.sackDollar,
-                          color: Provider.of<ThemeProvider>(context)
-                                      .themeModeType ==
-                                  ThemeModeType.dark
-                              ? Colors.white
-                              : Colors.black,
+                          // color: Provider.of<ThemeProvider>(context)
+                          //             .themeModeType ==
+                          //         ThemeModeType.dark
+                          //     ? Colors.white
+                          //     : Colors.black,
                         ),
                         const SizedBox(width: 10.0),
                         Text(
                           'Currency',
                           style: TextStyle(
                             fontSize: 16.0,
-                            color: Provider.of<ThemeProvider>(context)
-                                        .themeModeType ==
-                                    ThemeModeType.dark
-                                ? Colors.white
-                                : Colors.black,
+                            // color: Provider.of<ThemeProvider>(context)
+                            //             .themeModeType ==
+                            //         ThemeModeType.dark
+                            //     ? Colors.white
+                            //     : Colors.black,
                           ),
                         ),
                       ],
@@ -236,22 +236,22 @@ class _SettingsPageState extends State<SettingsPage> {
                             const SizedBox(width: 5.0),
                             Icon(
                               CupertinoIcons.lock_shield_fill,
-                              color: Provider.of<ThemeProvider>(context)
-                                  .themeModeType ==
-                                  ThemeModeType.dark
-                                  ? Colors.white
-                                  : Colors.black,
+                              // color: Provider.of<ThemeProvider>(context)
+                              //     .themeModeType ==
+                              //     ThemeModeType.dark
+                              //     ? Colors.white
+                              //     : Colors.black,
                             ),
                             const SizedBox(width: 10.0),
                             Text(
                               'App lock',
                               style: TextStyle(
                                 fontSize: 16.0,
-                                color: Provider.of<ThemeProvider>(context)
-                                    .themeModeType ==
-                                    ThemeModeType.dark
-                                    ? Colors.white
-                                    : Colors.black,
+                                // color: Provider.of<ThemeProvider>(context)
+                                //     .themeModeType ==
+                                //     ThemeModeType.dark
+                                //     ? Colors.white
+                                //     : Colors.black,
                               ),
                             ),
                           ],
@@ -290,22 +290,22 @@ class _SettingsPageState extends State<SettingsPage> {
                         const SizedBox(width: 5.0),
                         Icon(
                           Icons.apps_rounded,
-                          color: Provider.of<ThemeProvider>(context)
-                                      .themeModeType ==
-                                  ThemeModeType.dark
-                              ? Colors.white
-                              : Colors.black,
+                          // color: Provider.of<ThemeProvider>(context)
+                          //             .themeModeType ==
+                          //         ThemeModeType.dark
+                          //     ? Colors.white
+                          //     : Colors.black,
                         ),
                         const SizedBox(width: 10.0),
                         Text(
                           'Apps',
                           style: TextStyle(
                             fontSize: 16.0,
-                            color: Provider.of<ThemeProvider>(context)
-                                        .themeModeType ==
-                                    ThemeModeType.dark
-                                ? Colors.white
-                                : Colors.black,
+                            // color: Provider.of<ThemeProvider>(context)
+                            //             .themeModeType ==
+                            //         ThemeModeType.dark
+                            //     ? Colors.white
+                            //     : Colors.black,
                           ),
                         ),
                       ],
@@ -331,22 +331,22 @@ class _SettingsPageState extends State<SettingsPage> {
                         const SizedBox(width: 5.0),
                         Icon(
                           Icons.mail_rounded,
-                          color: Provider.of<ThemeProvider>(context)
-                                      .themeModeType ==
-                                  ThemeModeType.dark
-                              ? Colors.white
-                              : Colors.black,
+                          // color: Provider.of<ThemeProvider>(context)
+                          //             .themeModeType ==
+                          //         ThemeModeType.dark
+                          //     ? Colors.white
+                          //     : Colors.black,
                         ),
                         const SizedBox(width: 10.0),
                         Text(
                           'Contact me',
                           style: TextStyle(
                             fontSize: 16.0,
-                            color: Provider.of<ThemeProvider>(context)
-                                        .themeModeType ==
-                                    ThemeModeType.dark
-                                ? Colors.white
-                                : Colors.black,
+                            // color: Provider.of<ThemeProvider>(context)
+                            //             .themeModeType ==
+                            //         ThemeModeType.dark
+                            //     ? Colors.white
+                            //     : Colors.black,
                           ),
                         ),
                       ],
@@ -372,22 +372,22 @@ class _SettingsPageState extends State<SettingsPage> {
                         const SizedBox(width: 5.0),
                         Icon(
                           Icons.security_rounded,
-                          color: Provider.of<ThemeProvider>(context)
-                                      .themeModeType ==
-                                  ThemeModeType.dark
-                              ? Colors.white
-                              : Colors.black,
+                          // color: Provider.of<ThemeProvider>(context)
+                          //             .themeModeType ==
+                          //         ThemeModeType.dark
+                          //     ? Colors.white
+                          //     : Colors.black,
                         ),
                         const SizedBox(width: 10.0),
                         Text(
                           'Privacy Policy',
                           style: TextStyle(
                             fontSize: 16.0,
-                            color: Provider.of<ThemeProvider>(context)
-                                        .themeModeType ==
-                                    ThemeModeType.dark
-                                ? Colors.white
-                                : Colors.black,
+                            // color: Provider.of<ThemeProvider>(context)
+                            //             .themeModeType ==
+                            //         ThemeModeType.dark
+                            //     ? Colors.white
+                            //     : Colors.black,
                           ),
                         ),
                       ],
@@ -441,21 +441,21 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(width: 5.0),
               Icon(
                 Icons.person,
-                color: Provider.of<ThemeProvider>(context).themeModeType ==
-                        ThemeModeType.dark
-                    ? Colors.white
-                    : Colors.black,
+                // color: Provider.of<ThemeProvider>(context).themeModeType ==
+                //         ThemeModeType.dark
+                //     ? Colors.white
+                //     : Colors.black,
               ),
               const SizedBox(width: 10.0),
               Text(
                 'About',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Provider.of<ThemeProvider>(context).themeModeType ==
-                          ThemeModeType.dark
-                      ? Colors.white
-                      : Colors.black,
-                ),
+                // style: TextStyle(
+                //   fontSize: 16.0,
+                //   color: Provider.of<ThemeProvider>(context).themeModeType ==
+                //           ThemeModeType.dark
+                //       ? Colors.white
+                //       : Colors.black,
+                // ),
               ),
             ],
           ),

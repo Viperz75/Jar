@@ -21,10 +21,10 @@ class settingsSection extends StatelessWidget {
           text,
           style: TextStyle(
             fontSize: 17.0,
-            color: Provider.of<ThemeProvider>(context).themeModeType ==
-                ThemeModeType.dark
-                ? Colors.greenAccent
-                : Colors.black,
+            // color: Provider.of<ThemeProvider>(context).themeModeType ==
+            //     ThemeModeType.dark
+            //     ? Colors.greenAccent
+            //     : Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -419,16 +419,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Color selectedColor = colors[randomIndex];
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
-          ThemeModeType.dark
-          ? Colors.black
-          : const Color(0xfff5f7ec),
+      // backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
+      //     ThemeModeType.dark
+      //     ? Colors.black
+      //     : const Color(0xfff5f7ec),
       appBar: AppBar(
         // backgroundColor: Color(0xfff5f7ec),
-        backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
-                ThemeModeType.dark
-            ? Colors.black
-            : const Color(0xfff5f7ec),
+        // backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
+        //         ThemeModeType.dark
+        //     ? Colors.black
+        //     : const Color(0xfff5f7ec),
         title: Row(
           children: [
             // Text('Saved ৳$totalGoal/৳$totalSaved'),
@@ -442,7 +442,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff000c15) : Colors.white,
+        // color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff000c15) : Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -454,7 +454,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               icon: const FaIcon(FontAwesomeIcons.gear),
             ),
             FloatingActionButton(
-              backgroundColor: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff5e5c6a) : const Color(0xfffcd9c3),
+              // backgroundColor: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff5e5c6a) : const Color(0xfffcd9c3),
               child: const Icon(Icons.add),
               onPressed: () {
                 openAddDialog(context, null);
@@ -487,12 +487,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Card(
-                        color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.black : const Color(0xffdbdbdb), // Jar color
+                        // color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.black : const Color(0xffdbdbdb), // Jar color
                         elevation: 2,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.white : Colors.black, width: 2.0),
-                            borderRadius: const BorderRadius.all(
-                                Radius.circular(15))), // Jar Shape
+                        // shape: RoundedRectangleBorder(
+                        //     side: BorderSide(color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.white : Colors.black, width: 2.0),
+                        //     borderRadius: const BorderRadius.all(
+                        //         Radius.circular(15))), // Jar Shape
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Column(

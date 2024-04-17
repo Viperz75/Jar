@@ -60,6 +60,12 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeProvider(this.context) {
     _loadTheme();
+    SystemChannels.platform.invokeMethod<void>('SystemChrome.setPreferredOrientations', <String>['portrait']);
+    SystemChannels.platform.setMethodCallHandler((MethodCall call) async {
+      if (call.method == 'SystemUiOverlayStyleChanged') {
+        _setSystemThemeMode();
+      }
+    });
   }
 
   Future<void> _loadTheme() async {
@@ -84,21 +90,140 @@ class ThemeProvider extends ChangeNotifier {
     _themeModeType = mode;
     switch (mode) {
       case ThemeModeType.light:
-        _themeData = ThemeData.light();
+        _setLightTheme();
         break;
       case ThemeModeType.dark:
-        _themeData = ThemeData.dark();
+        _setDarkTheme();
         print(_themeData);
         break;
       case ThemeModeType.system:
-        _themeData = ThemeData();
+        _setSystemThemeMode();
         break;
     }
     notifyListeners();
   }
 
+  void _setLightTheme() {
+    _themeData = ThemeData.light().copyWith(
+      scaffoldBackgroundColor: Color(0xfff5f7ec),
+      textButtonTheme: const TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStatePropertyAll<Color>(Colors.black),
+        ),
+      ),
+
+      iconTheme: IconThemeData(
+          color: Colors.black,
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Color(0xfff5f7ec),
+      ),
+      bottomAppBarTheme: BottomAppBarTheme(
+          color: Colors.white
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Color(0xfffcd9c3),
+      ),
+      cardTheme: CardTheme(
+        color: Color(0xffdbdbdb),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 2.0),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+      ),
+    );
+  }
+
+  void _setDarkTheme(){
+    _themeData = ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: Colors.black,
+      textButtonTheme: const TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+        ),
+      ),
+      textTheme: TextTheme(
+        button: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      iconTheme: IconThemeData(
+          color: Colors.white
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.black,
+      ),
+      bottomAppBarTheme: BottomAppBarTheme(
+        color: Color(0xff000c15),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Color(0xff5e5c6a),
+      ),
+      cardTheme: CardTheme(
+        color: Colors.black,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+      ),
+    );
+  }
+
   void _setSystemThemeMode() {
     final brightness = MediaQuery.platformBrightnessOf(context);
-    _themeData = brightness == Brightness.dark ? ThemeData.dark() : ThemeData.light();
+    _themeData = brightness == Brightness.dark ? ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: Colors.black,
+      textButtonTheme: const TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+        ),
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.white
+      ),
+      appBarTheme: AppBarTheme(
+          backgroundColor: Colors.black,
+      ),
+      bottomAppBarTheme: BottomAppBarTheme(
+        color: Color(0xff000c15),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Color(0xff5e5c6a),
+      ),
+      cardTheme: CardTheme(
+      color: Colors.black,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.white, width: 2.0),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+    ),) : ThemeData.light().copyWith(
+      scaffoldBackgroundColor: Color(0xfff5f7ec),
+      textButtonTheme: const TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStatePropertyAll<Color>(Colors.black),
+        ),
+      ),
+
+      iconTheme: IconThemeData(
+          color: Colors.black
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Color(0xfff5f7ec),
+      ),
+      bottomAppBarTheme: BottomAppBarTheme(
+        color: Colors.white
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Color(0xfffcd9c3),
+      ),
+      cardTheme: CardTheme(
+        color: Color(0xffdbdbdb),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 2.0),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+      ),
+    );
+    notifyListeners();
   }
 }
