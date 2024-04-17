@@ -417,7 +417,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: [
                     Text('App Name: Jar'),
                     SizedBox(height: 5.0),
-                    Text('Version: 1.0.8'),
+                    Text('Version: 1.0.9'),
                     SizedBox(height: 5.0),
                     Text('Developer: Niaz Mahmud Akash'),
                     SizedBox(height: 5.0),

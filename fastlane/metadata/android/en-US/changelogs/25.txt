@@ -1,0 +1,11 @@
+Version: v1.0.9
+Release Date: 2024-04-17
+Enhancements:
+
+* Changed icons to better fit everything else
+* Quick edit box is more recognizable.
+* Adjusted app lock button.
+
+Fixes:
+
+* Fixed System mode theme.

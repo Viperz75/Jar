@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../theme/theme_manager.dart';
 
 
 class MyDropdownTextField extends StatefulWidget {
@@ -116,12 +118,11 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
                   controller: enterred_value,
                   decoration: InputDecoration(
                     labelText: "Amount",
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1.5),
-                      borderRadius: BorderRadius.circular(
-                        10.0,
-                      ),
-                    ),
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(
+                    //     10.0,
+                    //   ),
+                    // ),
                   ),
                   keyboardType: TextInputType.number,
                 ),

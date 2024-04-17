@@ -166,6 +166,13 @@ class ThemeProvider extends ChangeNotifier {
           borderRadius: BorderRadius.circular(15.0),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 
@@ -196,7 +203,15 @@ class ThemeProvider extends ChangeNotifier {
         side: BorderSide(color: Colors.white, width: 2.0),
         borderRadius: BorderRadius.circular(15.0),
       ),
-    ),) : ThemeData.light().copyWith(
+    ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    ) : ThemeData.light().copyWith(
       scaffoldBackgroundColor: Color(0xfff5f7ec),
       textButtonTheme: const TextButtonThemeData(
         style: ButtonStyle(
@@ -221,6 +236,13 @@ class ThemeProvider extends ChangeNotifier {
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.black, width: 2.0),
           borderRadius: BorderRadius.circular(15.0),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+          ),
         ),
       ),
     );
