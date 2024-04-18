@@ -11,10 +11,17 @@
 ![GitHub License](https://img.shields.io/github/license/Viperz75/Jar?style=flat&logo=github&label=License)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Viperz75/Jar)
 
-<div id="github-badge" align="center>
-<a href="https://github.com/Viperz75/Jar/releases/"> 
-<img alt="GitHub Badge" src="promotional/github-badge.png" height="60px">
-</a></div>
+<p align="center">
+  <a href="https://www.android.com"><img alt="built for android" src="https://forthebadge.com/images/badges/built-for-android.svg"></a> <a href="https://www.github.com/Viperz75"><img alt="built with love" src="https://forthebadge.com/images/badges/built-with-love.svg"/></a>
+</p>
+
+<h2 align="center">Get It On</h2>
+
+<div align="center">
+<a href="https://github.com/Viperz75/Jar/releases/"> </a>
+<img alt="GitHub Badge" src="promotional/github-badge.png" height="60px"></a>
+<a href='https://f-droid.org/packages/com.alphaxb.jar_app/'><img alt='Get it on F-Droid' src='https://fdroid.gitlab.io/artwork/badge/get-it-on.png' height='65'/></a>
+</div>
 
 <br />
 
@@ -47,9 +54,11 @@ The jar is a full-fledged, feature-rich application designed to empower users to
 | [Github Releases](https://github.com/Viperz75/Jar/releases)          | [![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Viperz75/Jar?include_prereleases&label=GitHub)](https://github.com/Viperz75/Jar/releases/latest)                                         |
 | [F-Droid (IzzyOnDroid)](https://apt.izzysoft.de/packages/eu.darken.sdmse/)   | [![](https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/com.alphaxb.jar_app)](https://apt.izzysoft.de/packages/com.alphaxb.jar_app/)
 
-## Screenshots
+<h2 align="center">Screenshots</h2>
 
-<img src="https://github.com/Viperz75/Jar/blob/master/promotional/screenshots/1.jpg" width="100"><img src="https://github.com/Viperz75/Jar/blob/master/promotional/screenshots/2.jpg" width="100"><img src="https://github.com/Viperz75/Jar/blob/master/promotional/screenshots/3.jpg" width="100"><img src="https://github.com/Viperz75/Jar/blob/master/promotional/screenshots/4.jpg" width="100">
+| ![](https://github.com/Viperz75/Jar/blob/master/promotional/screenshots/1.jpg) | ![](https://github.com/Viperz75/Jar/blob/master/promotional/screenshots/2.jpg) |
+|---------------------------------------------------------|---------------------------------------------------------|
+| ![](https://github.com/Viperz75/Jar/blob/master/promotional/screenshots/3.jpg) | ![](https://github.com/Viperz75/Jar/blob/master/promotional/screenshots/4.jpg) |
 
 ## License
 
