@@ -61,6 +61,7 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
       //   return widget.savedAmount;
       // }
 
+
       widget.onUpdateSavedAmount(addedValue, enteredValue);
       return addedValue;
     }
@@ -118,11 +119,6 @@ class _MyDropdownTextFieldState extends State<MyDropdownTextField>
                   controller: enterred_value,
                   decoration: InputDecoration(
                     labelText: "Amount",
-                    // enabledBorder: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(
-                    //     10.0,
-                    //   ),
-                    // ),
                   ),
                   keyboardType: TextInputType.number,
                 ),

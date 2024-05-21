@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import 'dart:math';
+import '../components/archive.dart';
 import '../components/chart.dart';
 import '../components/quick_edit.dart';
 import '../components/deadline.dart';
@@ -26,6 +27,7 @@ class Jar {
   final String goalAmount;
   final String deadline;
   final List<double> history;
+  final bool isArchived;
 
   Jar({
     required this.name,
@@ -33,6 +35,7 @@ class Jar {
     required this.goalAmount,
     required this.deadline,
     required this.history,
+    this.isArchived = false,
   });
 }
 
@@ -48,6 +51,7 @@ class JarAdapter extends TypeAdapter<Jar> {
       goalAmount: reader.readString(),
       deadline: reader.readString(),
       history: reader.readList().cast<double>(),
+      isArchived:  reader.readBool(),
     );
   }
 
@@ -58,6 +62,7 @@ class JarAdapter extends TypeAdapter<Jar> {
     writer.writeString(obj.goalAmount);
     writer.writeString(obj.deadline);
     writer.writeList(obj.history);
+    writer.writeBool(obj.isArchived);
   }
 }
 
@@ -107,6 +112,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         "goal_amount": item["goal_amount"],
         "deadline": item["deadline"],
         "history": item["history"],
+        "isArchived": item["isArchived"],
       };
     }).toList();
 
@@ -187,12 +193,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return totalGoal;
   }
 
+
   Future<int> calculateGoalAmount() async {
     double calculateGoalAmount = 0.0;
 
     for (var item in _items) {
-      // calculateGoalAmount += double.parse(item['goal_amount'] as String);
-      if (item['goal_amount'] != null) {
+      if (item['goal_amount'] != null && item['goal_amount'].isNotEmpty) {
         calculateGoalAmount += double.parse(item['goal_amount'] as String);
       }
     }
@@ -203,6 +209,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     return totalSaved;
   }
+
 
   double calculatePercentage(Map<String, dynamic> currentItem) {
     double savedAmount = double.parse(currentItem['saved_amount'] as String);
@@ -353,8 +360,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           "saved_amount": _saved.text,
                           "goal_amount": _goal.text,
                           "deadline": _dateController.text,
-                          'history':
-                          [], // Initialize history as empty list
+                          'history': [], // Initialize history as empty list
+                          'isArchived': false,
                         });
                       }
 
@@ -369,8 +376,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             'saved_amount': _saved.text.trim(),
                             'goal_amount': _goal.text.trim(),
                             'deadline': _dateController.text.trim(),
-                            'history': existingItem[
-                            'history'], // Preserve the existing history
+                            'history': existingItem['history'], // Preserve the existing history
+                            'isArchived': false,
                           },
                           // Pass a null value as the history value since no change is made to saved amount or goal amount
                           0.0,
@@ -382,6 +389,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       _saved.text = '';
                       _goal.text = '';
                       _dateController.text = '';
+
+
+                      calculateGoalAmount();
 
                       Navigator.of(context).pop();}
 
@@ -410,6 +420,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     const Color(0xfffcead2),
   ];
 
+  void _updateArchive(int itemKey, bool isArchived) {
+    setState(() {
+      _items.forEach((item) {
+        if (item['key'] == itemKey) {
+          item['isArchived'] = isArchived;
+        }
+      });
+    });
+  }
+
   // Color(0xffdbdbdb), Color(0xffd5fcd2), Color(0xffd2fcfc), Color(0xffdbd2fc), Color(0xfffcead2)
   @override
   Widget build(BuildContext context) {
@@ -419,19 +439,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Color selectedColor = colors[randomIndex];
 
     return Scaffold(
-      // backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
-      //     ThemeModeType.dark
-      //     ? Colors.black
-      //     : const Color(0xfff5f7ec),
       appBar: AppBar(
-        // backgroundColor: Color(0xfff5f7ec),
-        // backgroundColor: Provider.of<ThemeProvider>(context).themeModeType ==
-        //         ThemeModeType.dark
-        //     ? Colors.black
-        //     : const Color(0xfff5f7ec),
         title: Row(
           children: [
-            // Text('Saved ৳$totalGoal/৳$totalSaved'),
             Text('Saved '),
             CurrencyWidget(), // Include CurrencyWidget here
             Text('$totalGoal/'),
@@ -442,22 +452,33 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: BottomAppBar(
-        // color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff000c15) : Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const SettingsPage()));
-              },
-              icon: const FaIcon(FontAwesomeIcons.gear),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const SettingsPage()));
+                  },
+                  icon: const FaIcon(FontAwesomeIcons.gear),
+                ),
+                SizedBox(width: 10.0,),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Archive(items: _items)));
+                  },
+                  icon: const FaIcon(FontAwesomeIcons.boxArchive),
+                ),
+              ],
             ),
             FloatingActionButton(
-              // backgroundColor: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? const Color(0xff5e5c6a) : const Color(0xfffcd9c3),
               child: const Icon(Icons.add),
               onPressed: () {
                 openAddDialog(context, null);
+                calculateGoalAmount();
               },
             )
           ],
@@ -478,332 +499,379 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ],
               ),
             )
-          : ListView.builder(
-              itemCount: _items.length,
-              itemBuilder: (_, index) {
-                final currentItem = _items[index];
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Card(
-                        // color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.black : const Color(0xffdbdbdb), // Jar color
-                        elevation: 2,
-                        // shape: RoundedRectangleBorder(
-                        //     side: BorderSide(color: Provider.of<ThemeProvider>(context).themeModeType == ThemeModeType.dark ? Colors.white : Colors.black, width: 2.0),
-                        //     borderRadius: const BorderRadius.all(
-                        //         Radius.circular(15))), // Jar Shape
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  // Jar Name
-                                  Text(
-                                    // currentItem['name'] ?? 'Default name',
-                                    currentItem['name'] ?? 'Default Name',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // Jar Informations ( Saved amounts, goals, remaining amount )
-
-                                  // if (currentItem['goal_amount'].length == 0)
-                                  //   Text('৳${currentItem['saved_amount']}'),
-
-                                  if (currentItem['goal_amount'].length > 0)
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        CurrencyWidget(), Text('${currentItem['saved_amount']} /', style: const TextStyle(fontSize: 16)), CurrencyWidget(), Text('${currentItem['goal_amount']} ', style: const TextStyle(fontSize: 16)),
-                                        Text(
-                                            '(${(double.parse(currentItem['saved_amount'] as String) / double.parse(currentItem['goal_amount'] as String) * 100).toStringAsFixed(2)}%)',
-                                            style: const TextStyle(fontSize: 16)),
-                                        // Text(
-                                        //     '৳${currentItem['saved_amount']}/ ৳${currentItem['goal_amount']} '
-                                        //     '(${(double.parse(currentItem['saved_amount'] as String) / double.parse(currentItem['goal_amount'] as String) * 100).toStringAsFixed(2)}%)',
-                                        //     style: const TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                  if (currentItem['goal_amount'].length == 0)
-                                    // Text('৳${currentItem['saved_amount']}',
-                                    //     style: const TextStyle(fontSize: 16)),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        CurrencyWidget(),
-                                        Text('${currentItem['saved_amount']}',
-                                            style: const TextStyle(fontSize: 16))
-                                      ],
-                                    ),
-                                  const SizedBox(height: 5.0),
-                                  if (currentItem['goal_amount'].length > 0)
-                                    // Text(
-                                    //     'Remaining: ৳${(double.parse(currentItem['goal_amount'] as String) - double.parse(currentItem['saved_amount'] as String))}',
-                                    //     style: const TextStyle(fontSize: 16)),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text('Remaining: ', style: const TextStyle(fontSize: 16),),
-                                        CurrencyWidget(),
-                                        Text(
-                                            '${(double.parse(currentItem['goal_amount'] as String) - double.parse(currentItem['saved_amount'] as String))}',
-                                            style: const TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                  const SizedBox(height: 5.0),
-
-                                  // Jar Deadline
-                                  if (currentItem['deadline'].length > 0)
-                                    ExpandableDeadlineButton(
-                                      deadline: currentItem['deadline'],
-                                      savedAmount: double.parse(
-                                          currentItem['saved_amount']
-                                              as String),
-                                      goalAmount: double.parse(
-                                          currentItem['goal_amount'] as String),
-                                    ),
-                                  const SizedBox(height: 8.0),
-                currentItem['goal_amount'] != null && currentItem['goal_amount'].toString().isNotEmpty
-                ? // Code for when goal amount is present
-                double.parse(currentItem['saved_amount'] as String) == double.parse(currentItem['goal_amount'] as String)
-                ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Text('Goal has been reached  '),
-                FaIcon(FontAwesomeIcons.circleCheck, color: Provider.of<ThemeProvider>(context)
-                    .themeModeType ==
-                    ThemeModeType.dark
-                    ? Colors.greenAccent
-                    : Colors.greenAccent[700],)
-                ],
-                )
-                    : SizedBox() // Return an empty SizedBox if goal is not reached
-                    : Text(''),
-                                  MyDropdownTextField(
-                                    itemKey: currentItem['key'],
-                                    savedAmount: double.parse(
-                                        currentItem['saved_amount']),
-                                    onUpdateSavedAmount:
-                                        (newValue, enteredValues) {
-                                      var convertToString = newValue.toString();
-                                      // Get the existing history or initialize an empty list
-                                      List<double> history =
-                                          currentItem['history'] ?? [];
-                                      // Add the entered value to the history
-                                      history.add(enteredValues);
-                                      // Update the jar item data including the updated history
-                                      _update_item(
-                                        currentItem['key'],
-                                        {
-                                          'name': currentItem['name'],
-                                          'saved_amount': convertToString,
-                                          'goal_amount':
-                                              currentItem['goal_amount'],
-                                          'deadline': currentItem['deadline'],
-                                          'history':
-                                              history, // Include the updated history
-                                        },
-                                        enteredValues,
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 1.0),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // Jar Edit Button
-                                  IconButton(
-                                    onPressed: () {
-                                      openAddDialog(
-                                          context, currentItem['key']);
-                                    },
-                                    icon: const Icon(Icons.edit, size: 30.0),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: Text(
-                                              'History for ${currentItem['name']}'),
-                                          content: SingleChildScrollView(
-                                            child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: currentItem[
-                                                            'history'] !=
-                                                        null
-                                                    ? currentItem['history']
-                                                        .map<Widget>((amount) {
-                                                        bool isPositive = false;
-                                                        if (amount is double) {
-                                                          isPositive =
-                                                              amount > 0;
-                                                        }
-                                                        return ListTile(
-                                                          title: Text(
-                                                            isPositive
-                                                                ? 'DEPOSIT: +$amount'
-                                                                : 'WITHDRAWAL: $amount',
-                                                            style: TextStyle(
-                                                                color: isPositive
-                                                                    ? Colors
-                                                                        .green
-                                                                    : Colors
-                                                                        .red),
-                                                          ),
-                                                        );
-                                                      }).toList()
-                                                    : []),
+          : Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    itemCount: _items.length,
+                    itemBuilder: (_, index) {
+                      final currentItem = _items[index];
+                      if(currentItem['isArchived'] == false) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Card(
+                                elevation: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          // Jar Name
+                                          Text(
+                                            // currentItem['name'] ?? 'Default name',
+                                            currentItem['name'] ?? 'Default Name',
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Close'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    icon: const Icon(Icons.history, size: 30.0,),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          if (currentItem['history'] == null ||
-                                              currentItem['goal_amount'] ==
-                                                  null) {
-                                            // If either history or goal_amount is null, show 'Chart not available' message
-                                            return AlertDialog(
-                                              title:
-                                                  const Text('Chart not available'),
-                                              content: const Text(
-                                                  'History or Goal Amount data is missing.'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Close'),
-                                                ),
-                                              ],
-                                            );
-                                          } else {
-                                            double goalAmount;
-                                            try {
-                                              // Parse goal_amount as a double
-                                              goalAmount = double.parse(
-                                                  currentItem['goal_amount']);
-                                            } catch (e) {
-                                              // If parsing fails, show 'Chart not available' message
-                                              return AlertDialog(
-                                                title:
-                                                    const Text('Chart not available'),
-                                                content: const Text(
-                                                    'Invalid Goal Amount data.'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Text('Close'),
-                                                  ),
-                                                ],
-                                              );
-                                            }
-
-                                            // If both history and parsed goal_amount are present, show the chart
-                                            return AlertDialog(
-                                              title: const Text(
-                                                  'History vs. Goal Amount'),
-                                              content: SizedBox(
-                                                height: 300, //  height
-                                                child: LineChartWidget(
-                                                  history:
-                                                      currentItem['history'],
-                                                  goalAmount: goalAmount,
-                                                ),
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Close'),
-                                                ),
-                                              ],
-                                            );
-                                          }
-                                        },
-                                      );
-                                    },
-                                    icon: const FaIcon(FontAwesomeIcons.chartLine),
-                                  ),
-
-                                  const SizedBox(width: 10),
-                                  // Jar Delete Button
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Delete Jar?'),
-                                            content: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          // Jar Informations ( Saved amounts, goals, remaining amount )
+                                          if (currentItem['goal_amount'].length > 0)
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('Close'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    _delete_item(
-                                                        currentItem['key']);
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('Confirm'),
-                                                ),
+                                                if(double.parse(currentItem['goal_amount'] as String) != null)
+                                                  CurrencyWidget(), Text('${currentItem['saved_amount']} /', style: const TextStyle(fontSize: 16)), CurrencyWidget(), Text('${currentItem['goal_amount']} ', style: const TextStyle(fontSize: 16)),
+                                                Text(
+                                                    '(${(double.parse(currentItem['saved_amount'] as String) / double.parse(currentItem['goal_amount'] as String) * 100).toStringAsFixed(2)}%)',
+                                                    style: const TextStyle(fontSize: 16)),
+                                                // Text(
+                                                //     '৳${currentItem['saved_amount']}/ ৳${currentItem['goal_amount']} '
+                                                //     '(${(double.parse(currentItem['saved_amount'] as String) / double.parse(currentItem['goal_amount'] as String) * 100).toStringAsFixed(2)}%)',
+                                                //     style: const TextStyle(fontSize: 16)),
                                               ],
                                             ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    icon: const Icon(Icons.delete, size: 30.0,),
-                                  )
-                                ],
+                                          if (currentItem['goal_amount'].length == 0)
+                                            // Text('৳${currentItem['saved_amount']}',
+                                            //     style: const TextStyle(fontSize: 16)),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                CurrencyWidget(),
+                                                Text('${currentItem['saved_amount']}',
+                                                    style: const TextStyle(fontSize: 16))
+                                              ],
+                                            ),
+                                          const SizedBox(height: 5.0),
+                                          if (currentItem['goal_amount'].length > 0)
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text('Remaining: ', style: const TextStyle(fontSize: 16),),
+                                                CurrencyWidget(),
+                                                Text(
+                                                    '${(double.parse(currentItem['goal_amount'] as String) - double.parse(currentItem['saved_amount'] as String))}',
+                                                    style: const TextStyle(fontSize: 16)),
+                                              ],
+                                            ),
+                                          const SizedBox(height: 5.0),
+
+                                          // Jar Deadline
+                                          if (currentItem['deadline'].length > 0)
+                                            ExpandableDeadlineButton(
+                                              deadline: currentItem['deadline'],
+                                              savedAmount: double.parse(
+                                                  currentItem['saved_amount']
+                                                      as String),
+                                              goalAmount: double.parse(
+                                                  currentItem['goal_amount'] as String),
+                                            ),
+                                          const SizedBox(height: 8.0),
+                        currentItem['goal_amount'] != null && currentItem['goal_amount'].toString().isNotEmpty
+                        ? // Code for when goal amount is present
+                        double.parse(currentItem['saved_amount'] as String) == double.parse(currentItem['goal_amount'] as String)
+                        ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                        Text('Goal has been reached  '),
+                        FaIcon(FontAwesomeIcons.circleCheck, color: Provider.of<ThemeProvider>(context)
+                            .themeModeType ==
+                            ThemeModeType.dark
+                            ? Colors.greenAccent
+                            : Colors.greenAccent[700],)
+                        ],
+                        )
+                            : SizedBox() // Return an empty SizedBox if goal is not reached
+                            : Text(''),
+                                          MyDropdownTextField(
+                                            itemKey: currentItem['key'],
+                                            savedAmount: double.parse(
+                                                currentItem['saved_amount']),
+                                            onUpdateSavedAmount:
+                                                (newValue, enteredValues) {
+                                              var convertToString = newValue.toString();
+                                              // Get the existing history or initialize an empty list
+                                              List<double> history =
+                                                  currentItem['history'] ?? [];
+                                              // Add the entered value to the history
+                                              history.add(enteredValues);
+                                              // Update the jar item data including the updated history
+                                              _update_item(
+                                                currentItem['key'],
+                                                {
+                                                  'name': currentItem['name'],
+                                                  'saved_amount': convertToString,
+                                                  'goal_amount':
+                                                      currentItem['goal_amount'],
+                                                  'deadline': currentItem['deadline'],
+                                                  'history': history, // Include the updated history
+                                                  'isArchived': false,
+                                                },
+                                                enteredValues,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 1.0),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          // Jar Edit Button
+                                          IconButton(
+                                            onPressed: () {
+                                              openAddDialog(
+                                                  context, currentItem['key']);
+                                            },
+                                            icon: const Icon(Icons.edit, size: 30.0),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          IconButton(
+                                            onPressed: () {
+                                              _update_item(currentItem['key'], {
+                                                'name': currentItem['name'],
+                                                'saved_amount': currentItem['saved_amount'],
+                                                'goal_amount': currentItem['goal_amount'],
+                                                'deadline': currentItem['deadline'],
+                                                'history': currentItem['history'], // Include the updated history
+                                                'isArchived': true,
+                                              }, 0);
+                                            },
+                                            icon: const Icon(Icons.archive_rounded, size: 30.0),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) => AlertDialog(
+                                                  title: Text(
+                                                      'History for ${currentItem['name']}'),
+                                                  content: SingleChildScrollView(
+                                                    child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment.start,
+                                                        children: currentItem[
+                                                                    'history'] !=
+                                                                null
+                                                            ? currentItem['history']
+                                                                .map<Widget>((amount) {
+                                                                bool isPositive = false;
+                                                                if (amount is double) {
+                                                                  isPositive =
+                                                                      amount > 0;
+                                                                }
+                                                                return ListTile(
+                                                                  title: Text(
+                                                                    isPositive
+                                                                        ? 'DEPOSIT: +$amount'
+                                                                        : 'WITHDRAWAL: $amount',
+                                                                    style: TextStyle(
+                                                                        color: isPositive
+                                                                            ? Colors
+                                                                                .green
+                                                                            : Colors
+                                                                                .red),
+                                                                  ),
+                                                                );
+                                                              }).toList()
+                                                            : []),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Text('Close'),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(Icons.history, size: 30.0,),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  if (currentItem['history'] == null ||
+                                                      currentItem['goal_amount'] ==
+                                                          null) {
+                                                    // If either history or goal_amount is null, show 'Chart not available' message
+                                                    return AlertDialog(
+                                                      title:
+                                                          const Text('Chart not available'),
+                                                      content: const Text(
+                                                          'History or Goal Amount data is missing.'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Text('Close'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  } else {
+                                                    double goalAmount;
+                                                    try {
+                                                      // Parse goal_amount as a double
+                                                      goalAmount = double.parse(
+                                                          currentItem['goal_amount']);
+                                                    } catch (e) {
+                                                      // If parsing fails, show 'Chart not available' message
+                                                      return AlertDialog(
+                                                        title:
+                                                            const Text('Chart not available'),
+                                                        content: const Text(
+                                                            'Invalid Goal Amount data.'),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: const Text('Close'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+
+                                                    // If both history and parsed goal_amount are present, show the chart
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          'History vs. Goal Amount'),
+                                                      content: SizedBox(
+                                                        height: 300, //  height
+                                                        child: LineChartWidget(
+                                                          history:
+                                                              currentItem['history'],
+                                                          goalAmount: goalAmount,
+                                                        ),
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Text('Close'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  }
+                                                },
+                                              );
+                                            },
+                                            icon: const FaIcon(FontAwesomeIcons.chartLine),
+                                          ),
+
+                                          const SizedBox(width: 10),
+                                          // Jar Delete Button
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text('Delete Jar?'),
+                                                    content: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                          child: const Text('Close'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            _delete_item(
+                                                                currentItem['key']);
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                          child: const Text('Confirm'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: const Icon(Icons.delete, size: 30.0,),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5.0)
+                                    ],
+                                  ),
+                                ),
                               ),
-                              const SizedBox(height: 5.0)
-                            ],
-                          ),
+                            ),
+                          ],
+                        );
+                      }
+                      // else{
+                      //   return Center(
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.only(top: 200.0),
+                      //       child: Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           // Show this when there's no jar
+                      //           Image.asset('images/jar_background.png', scale: 3,),
+                      //           const SizedBox(height: 8.0),
+                      //           const Text(
+                      //             'Add a new jar by clicking the button below!',
+                      //             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   );
+                      // }
+                    }),
+              ),
+              if (_items.every((item) => item['isArchived'] == true))
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 130.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('images/jar_background.png', scale: 3,),
+                        const SizedBox(height: 8.0),
+                        const Text(
+                          'Add a new jar by clicking the button below!',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                );
-              }),
+                  ),
+                ),
+            ],
+          ),
     );
   }
 }

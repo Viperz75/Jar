@@ -1,0 +1,6 @@
+Version: v1.0.10
+Release Date: 2024-05-21
+Enhancements:
+
+* Added Archive Feature
+* Updated Icons.

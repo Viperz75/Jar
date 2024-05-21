@@ -62,7 +62,7 @@ The jar is a full-fledged, feature-rich application designed to empower users to
 
 ## License
 
-Jar's code is available under a GPL v3 license, this excludes:
+Jar's code is available under a GPL v3 license. However, if you decide to make a new app using JAR code then you must use your own
 
 * Jar icons, logos, mascots, marketing materials, and assets.
 * Jar animations and videos.

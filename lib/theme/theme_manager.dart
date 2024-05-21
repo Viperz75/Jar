@@ -131,6 +131,14 @@ class ThemeProvider extends ChangeNotifier {
           borderRadius: BorderRadius.circular(15.0),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.white,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
     );
   }
 
@@ -142,11 +150,11 @@ class ThemeProvider extends ChangeNotifier {
           foregroundColor: MaterialStatePropertyAll<Color>(Colors.white),
         ),
       ),
-      textTheme: TextTheme(
-        button: TextStyle(
-          color: Colors.white,
-        ),
-      ),
+      // textTheme: TextTheme(
+      //   button: TextStyle(
+      //     color: Colors.white,
+      //   ),
+      // ),
       iconTheme: IconThemeData(
           color: Colors.white
       ),
@@ -171,6 +179,7 @@ class ThemeProvider extends ChangeNotifier {
           borderSide: BorderSide(
             color: Colors.white,
           ),
+          borderRadius: BorderRadius.circular(10.0),
         ),
       ),
     );
@@ -209,6 +218,7 @@ class ThemeProvider extends ChangeNotifier {
           borderSide: BorderSide(
             color: Colors.white,
           ),
+          borderRadius: BorderRadius.circular(10.0),
         ),
       ),
     ) : ThemeData.light().copyWith(
@@ -243,6 +253,7 @@ class ThemeProvider extends ChangeNotifier {
           borderSide: BorderSide(
             color: Colors.black,
           ),
+          borderRadius: BorderRadius.circular(10.0),
         ),
       ),
     );
